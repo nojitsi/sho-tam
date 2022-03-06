@@ -1,19 +1,32 @@
 {
-  "name": "sho-tam",
-  "version": "0.0.1",
-  "description": "Dependency file for sho-tam project.",
-  "main": "index.js",
+  "name": "remix-app-template",
+  "private": true,
+  "description": "",
+  "license": "",
+  "sideEffects": false,
   "scripts": {
-    "test": "echo \"Test mock.\" && exit 1"
+    "build": "cross-env NODE_ENV=production remix build",
+    "dev": "cross-env NODE_ENV=development remix dev",
+    "postinstall": "remix setup node",
+    "start": "cross-env NODE_ENV=production remix-serve build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nojitsi/sho-tam.git"
+  "dependencies": {
+    "@remix-run/react": "^1.2.3",
+    "@remix-run/serve": "^1.2.3",
+    "cross-env": "^7.0.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "remix": "^1.2.3"
   },
-  "author": "nojitsi",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nojitsi/sho-tam/issues"
+  "devDependencies": {
+    "@remix-run/dev": "^1.2.3",
+    "@remix-run/eslint-config": "^1.2.3",
+    "@types/react": "^17.0.24",
+    "@types/react-dom": "^17.0.9",
+    "eslint": "^8.9.0",
+    "typescript": "^4.5.5"
   },
-  "homepage": "https://github.com/nojitsi/sho-tam#readme"
+  "engines": {
+    "node": ">=14"
+  }
 }
