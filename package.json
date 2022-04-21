@@ -11,19 +11,35 @@
     "start": "cross-env NODE_ENV=production remix-serve build"
   },
   "dependencies": {
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "@material-ui/core": "^4.12.3",
+    "@mui/icons-material": "^5.5.1",
+    "@mui/material": "^5.5.2",
+    "@mui/styles": "^5.5.1",
+    "@prisma/client": "^3.11.1",
     "@remix-run/react": "^1.2.3",
     "@remix-run/serve": "^1.2.3",
     "cross-env": "^7.0.3",
+    "jfs": "^0.3.0",
+    "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "remix": "^1.2.3"
+    "remix": "^1.2.3",
+    "tiny-invariant": "^1.2.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.2.3",
     "@remix-run/eslint-config": "^1.2.3",
+    "@types/jfs": "^0.2.5",
+    "@types/lodash": "^4.14.179",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.16.0",
+    "@typescript-eslint/parser": "^5.16.0",
     "eslint": "^8.9.0",
+    "eslint-plugin-react": "^7.29.4",
+    "prisma": "^3.11.1",
     "typescript": "^4.5.5"
   },
   "engines": {

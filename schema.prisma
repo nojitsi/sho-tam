@@ -1,0 +1,111 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id    Int    @id @default(autoincrement())
+  name  String
+  phone String
+
+  email         String  @unique
+  emailVerified Boolean @default(false)
+
+  docsVerified Boolean @default(false)
+
+  role     UserRole  @default(USER)
+  posts    TradeAd[]
+  document File[]    @relation("document")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  // documentFileType  FileType  @default(DOCUMENT)
+  // @@unique([id, documentFileType])
+  File File[]
+}
+
+enum FileType {
+  DOCUMENT
+  IMAGE
+}
+
+model File {
+  id   Int    @id @default(autoincrement())
+  // type              FileType
+  name String
+  path String
+
+  relatedId Int
+
+  tradeAdImage  TradeAd? @relation(fields: [relatedId], references: [id], map: "image")
+  documentOwner User?    @relation(fields: [relatedId], references: [id], map: "document")
+
+  User      User?    @relation("document", fields: [userId], references: [id])
+  userId    Int?
+  TradeAd   TradeAd? @relation("image", fields: [tradeAdId], references: [id])
+  tradeAdId Int?
+}
+
+model TradeAd {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String
+  url         String @unique
+  price       Int
+  views       Int    @default(0)
+
+  location   Location @relation(fields: [locationId], references: [id])
+  locationId Int
+
+  author   User @relation(fields: [authorId], references: [id])
+  authorId Int
+
+  type       GoodTypes @relation(fields: [goodTypeId], references: [id])
+  goodTypeId Int
+
+  kit   TradeAdKitItems[]
+  image File[]         @relation("image")
+
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime
+
+  File File[]
+}
+
+model TradeAdKitItems {
+  id        Int      @id @default(autoincrement())
+  title     String
+  tradeAdId Int
+  tradeAd   TradeAd? @relation(fields: [tradeAdId], references: [id])
+}
+
+model GoodTypes {
+  id       Int       @id @default(autoincrement())
+  name     String
+  imageUrl String
+  TradeAd  TradeAd[]
+}
+
+model Location {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  childs    Location[] @relation("location")
+  parent    Location? @relation(fields: [parentId], references: [id], name: "location")
+  parentId  Int @default(0)
+
+  TradeAd TradeAd[]
+}

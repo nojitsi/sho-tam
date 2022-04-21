@@ -1,0 +1,38 @@
+html, body {
+  margin: 0;
+  /* overflow: hidden; */
+  height: 100%;
+}
+
+body {
+  background-image: url("/img/main-bg.png");
+  background-repeat:no-repeat;
+  background-size:cover;
+}
+
+.container {
+  display: flex;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.center {
+  justify-content: center;
+  align-items: center;
+}
+
+.inherit-size {
+  width: inherit;
+  height: inherit;
+}
+
+.header {
+  color: 'white';
+}
+
+.header-title {
+  font-size: 1.8rem;
+  color: white;
+}
