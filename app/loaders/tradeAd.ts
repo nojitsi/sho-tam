@@ -1,5 +1,5 @@
 import { prisma } from '~/database/prisma'
-import { TradeAd, Prisma } from '@prisma/client'
+import type { TradeAd, Prisma } from '@prisma/client'
 
 interface TradeAdMap {
   [key: string]: TradeAd;

@@ -1,21 +1,20 @@
 import invariant from 'tiny-invariant'
-import { redirect, Form, ActionFunction, useActionData, useTransition } from 'remix'
+import type { ActionFunction} from 'remix'
+import { redirect, Form, useActionData, useTransition } from 'remix'
 
 import { createTradeAd } from '~/loaders/tradeAd'
 
 import transformToKebabCase from '~/helpers/transformToKebabCase'
 
 type TradeAddCreationError = {
-  title?: boolean;
-	description?: boolean;
-	price?: boolean;
-	locationId?: boolean;
-	url?: boolean;
-	typeId?: boolean
-	//author
-	//goodTypeId
-	//kit
-	//images
+  title?: string;
+	description?: string;
+	price?: string;
+	locationId?: string;
+	url?: string;
+	typeId?: string;
+	kit?: string;
+	images?: string;
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -23,10 +22,13 @@ export const action: ActionFunction = async ({ request }) => {
 
 	const title = formData.get('title')
 	const description = formData.get('description')
-	const locationId = Number(formData.get('locationId'));
+	const locationId = Number(formData.get('locationId'))
 	const price = Number(formData.get('price'))
 	const typeId = Number(formData.get('typeId'))
+	const kit = formData.getAll('kit').map(kitItem => {return {title: kitItem.toString()}})
 
+
+	//validation
 	const errors: TradeAddCreationError = {}
 
 	if (!title) errors.title = true
@@ -48,19 +50,39 @@ export const action: ActionFunction = async ({ request }) => {
 	const url = transformToKebabCase(title)
 	const authorId = 1
 
-	//goodTypeId
-	//kit
 	//images
 
 	const result = await createTradeAd({ 
 		title,
 		description,
 		price,
-		locationId,
 		url,
-		authorId,
-
-		goodTypeId: typeId
+		type: {
+			connect: {
+				id: typeId
+			}
+		},
+		location: {
+			connect: {
+				id: locationId
+			}
+		},
+		author: {
+			connect: {
+				id: authorId
+			}
+		},
+		kit: {
+			createMany: {
+				data: kit,
+				skipDuplicates: true
+			}
+		},
+		image: {
+			createMany: {
+				
+			}
+		}
 	})
 
 	return redirect('/admin')

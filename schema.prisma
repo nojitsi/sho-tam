@@ -76,11 +76,9 @@ model TradeAd {
   kit   TradeAdKitItems[]
   image File[]         @relation("image")
 
-
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  deletedAt DateTime
+  deletedAt DateTime?
 
   File File[]
 }
