@@ -22,38 +22,30 @@ model User {
 
   docsVerified Boolean @default(false)
 
-  role     UserRole  @default(USER)
-  posts    TradeAd[]
-  document File[]    @relation("document")
+  role      UserRole        @default(USER)
+  posts     TradeAd[]
+  documents DocumentImage[] @relation("document")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-
-  // documentFileType  FileType  @default(DOCUMENT)
-  // @@unique([id, documentFileType])
-  File File[]
 }
 
-enum FileType {
-  DOCUMENT
-  IMAGE
-}
-
-model File {
+model DocumentImage {
   id   Int    @id @default(autoincrement())
-  // type              FileType
   name String
   path String
 
-  relatedId Int
+  User   User? @relation("document", fields: [userId], references: [id])
+  userId Int
+}
 
-  tradeAdImage  TradeAd? @relation(fields: [relatedId], references: [id], map: "image")
-  documentOwner User?    @relation(fields: [relatedId], references: [id], map: "document")
+model TradeAdImage {
+  id   Int    @id @default(autoincrement())
+  name String
+  path String
 
-  User      User?    @relation("document", fields: [userId], references: [id])
-  userId    Int?
-  TradeAd   TradeAd? @relation("image", fields: [tradeAdId], references: [id])
-  tradeAdId Int?
+  TradeAd   TradeAd? @relation(fields: [tradeAdId], references: [id])
+  tradeAdId Int
 }
 
 model TradeAd {
@@ -74,13 +66,11 @@ model TradeAd {
   goodTypeId Int
 
   kit   TradeAdKitItems[]
-  image File[]         @relation("image")
+  image TradeAdImage[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-
-  File File[]
 }
 
 model TradeAdKitItems {
@@ -101,9 +91,9 @@ model Location {
   id   Int    @id @default(autoincrement())
   name String
 
-  childs    Location[] @relation("location")
-  parent    Location? @relation(fields: [parentId], references: [id], name: "location")
-  parentId  Int @default(0)
+  childs   Location[] @relation("location")
+  parent   Location?  @relation(fields: [parentId], references: [id], name: "location")
+  parentId Int?        @default(0)
 
   TradeAd TradeAd[]
 }

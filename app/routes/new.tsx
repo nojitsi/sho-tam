@@ -1,5 +1,6 @@
 import invariant from 'tiny-invariant'
 import type { ActionFunction} from 'remix'
+import { unstable_createFileUploadHandler, unstable_parseMultipartFormData } from 'remix'
 import { redirect, Form, useActionData, useTransition } from 'remix'
 
 import { createTradeAd } from '~/loaders/tradeAd'
@@ -17,8 +18,21 @@ type TradeAddCreationError = {
 	images?: string;
 };
 
-export const action: ActionFunction = async ({ request }) => {
-	const formData = await request.formData()
+export const action: ActionFunction = async ({ request }) => { 
+	const outerImageFolderPath = '/images'
+	const innerImageFolderPath = 'public' + outerImageFolderPath
+
+	//maybee check content
+	const uploadHandler = unstable_createFileUploadHandler({
+		directory: innerImageFolderPath,
+		maxFileSize: 10000000, //bytes
+		file: ({ filename }) => filename,
+	})
+
+	const formData = await unstable_parseMultipartFormData(
+		request,
+		uploadHandler
+	)
 
 	const title = formData.get('title')
 	const description = formData.get('description')
@@ -27,15 +41,19 @@ export const action: ActionFunction = async ({ request }) => {
 	const typeId = Number(formData.get('typeId'))
 	const kit = formData.getAll('kit').map(kitItem => {return {title: kitItem.toString()}})
 
+	const images = formData.getAll('images').map((image: any) => {return {
+		name: image.name,
+		path: outerImageFolderPath + '/' + image.name,
+	}})
 
 	//validation
 	const errors: TradeAddCreationError = {}
 
-	if (!title) errors.title = true
-	if (!description) errors.description = true
-	if (!price) errors.price = true
-	if (!locationId) errors.locationId = true
-	if (!typeId) errors.typeId = true
+	if (!title) errors.title = 'err'
+	if (!description) errors.description = 'err'
+	if (!price) errors.price = 'err'
+	if (!locationId) errors.locationId = 'err'
+	if (!typeId) errors.typeId = 'err'
 
 	if (Object.keys(errors).length) {
 		return errors
@@ -80,7 +98,7 @@ export const action: ActionFunction = async ({ request }) => {
 		},
 		image: {
 			createMany: {
-				
+				data: images
 			}
 		}
 	})
@@ -93,7 +111,7 @@ export default function NewPost() {
 	const transition = useTransition()
 
 	return (
-		<Form method='post'>
+		<Form method='post' encType='multipart/form-data'>
 			<p>
 				<label>
           Заголовок:{' '}
@@ -105,12 +123,12 @@ export default function NewPost() {
 			</p>
 
 			<p>
-				<label htmlFor='body'>Опис:</label>{' '}
+				<label htmlFor='description'>Опис:</label>{' '}
 				{errors?.markdown ? (
 					<em>Опис</em>
 				) : null}
 				<br />
-				<textarea id='body' rows={20} name='body' />
+				<textarea id='description' rows={20} name='description' />
 			</p>
 
 			<p>
@@ -125,8 +143,9 @@ export default function NewPost() {
 
 			
 			<input type='number' name='locationId' />
-				
-
+			<input type='number' name='typeId' value={1} />
+			<input type='file' name='images' multiple={true}/>
+			
 			<p>
 				<button type='submit'>
 					{
