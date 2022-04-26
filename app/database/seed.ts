@@ -26,6 +26,23 @@ async function main() {
 		}
 	})
 
+	const adTypes = await prisma.goodTypes.createMany({
+		data: [
+			{
+				name: 'Дробаш',
+				imageUrl: '/img/weapons/icons/shotgun.png'
+			},
+			{
+				name: 'Карабін',
+				imageUrl: '/img/weapons/icons/carabin.png'
+			},
+			{
+				name: 'Пістолет',
+				imageUrl: '/img/weapons/icons/hand-gun.png'
+			},
+		]
+	})
+
 	
 }
 
