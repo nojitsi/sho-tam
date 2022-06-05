@@ -5,10 +5,10 @@
   "license": "",
   "sideEffects": false,
   "scripts": {
-    "build": "cross-env NODE_ENV=production remix build",
-    "dev": "cross-env NODE_ENV=development remix dev",
+    "build": "node -r dotenv/config ./node_modules/.bin/remix build",
+    "dev": "node -r dotenv/config ./node_modules/.bin/remix dev",
     "postinstall": "remix setup node",
-    "start": "cross-env NODE_ENV=production remix-serve build"
+    "start": "node -r dotenv/config ./node_modules/.bin/remix-serve build"
   },
   "dependencies": {
     "@emotion/react": "^11.8.2",
@@ -21,11 +21,14 @@
     "@remix-run/react": "^1.2.3",
     "@remix-run/serve": "^1.2.3",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.0.0",
     "jfs": "^0.3.0",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "remix": "^1.2.3",
+    "remix-auth": "^3.2.2",
+    "remix-auth-socials": "^1.0.2",
     "tiny-invariant": "^1.2.0"
   },
   "devDependencies": {

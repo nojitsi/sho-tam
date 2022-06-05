@@ -6,14 +6,14 @@ async function main() {
 		data: {
 			id: 0,
 			name: 'Вся Україна',
-			parentId: 0
-		}
+			parentId: 0,
+		},
 	})
 	const testLocation = await prisma.location.create({
 		data: {
 			name: 'Тестова локація',
-			parentId: 0
-		}
+			parentId: 0,
+		},
 	})
 	const admin = await prisma.user.create({
 		data: {
@@ -23,27 +23,25 @@ async function main() {
 			emailVerified: true,
 			docsVerified: true,
 			role: UserRole.ADMIN,
-		}
+		},
 	})
 
 	const adTypes = await prisma.goodTypes.createMany({
 		data: [
 			{
 				name: 'Дробаш',
-				imageUrl: '/img/weapons/icons/shotgun.png'
+				imageUrl: '/img/weapons/icons/shotgun.png',
 			},
 			{
 				name: 'Карабін',
-				imageUrl: '/img/weapons/icons/carabin.png'
+				imageUrl: '/img/weapons/icons/carabin.png',
 			},
 			{
 				name: 'Пістолет',
-				imageUrl: '/img/weapons/icons/hand-gun.png'
+				imageUrl: '/img/weapons/icons/hand-gun.png',
 			},
-		]
+		],
 	})
-
-	
 }
 
 main()

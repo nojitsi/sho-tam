@@ -15,28 +15,15 @@ enum UserRole {
 model User {
   id    Int    @id @default(autoincrement())
   name  String
-  phone String
 
   email         String  @unique
   emailVerified Boolean @default(false)
 
-  docsVerified Boolean @default(false)
-
   role      UserRole        @default(USER)
   posts     TradeAd[]
-  documents DocumentImage[] @relation("document")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-}
-
-model DocumentImage {
-  id   Int    @id @default(autoincrement())
-  name String
-  path String
-
-  User   User? @relation("document", fields: [userId], references: [id])
-  userId Int
 }
 
 model TradeAdImage {
@@ -54,6 +41,7 @@ model TradeAd {
   description String
   url         String @unique
   price       Int
+  contact     String
   views       Int    @default(0)
 
   location   Location @relation(fields: [locationId], references: [id])

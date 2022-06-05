@@ -1,7 +1,8 @@
-import { Link } from 'remix'
-import type { MetaFunction, LinksFunction } from 'remix'
+import type { MetaFunction} from 'remix'
+import { LinksFunction, Form } from 'remix'
+import { SocialsProvider } from 'remix-auth-socials'
+
 import {
-	Links,
 	Outlet
 } from 'remix'
 
@@ -13,6 +14,16 @@ export const meta: MetaFunction = () => {
 		viewport: 'width=device-width,initial-scale=1',
 		charSet: 'utf-8',
 	}
+}
+
+const BUTTON_STYLES = {
+	padding: '15px 25px',
+	background: '#dd4b39',
+	border: '0',
+	outline: 'none',
+	cursor: 'pointer',
+	color: 'white',
+	fontWeight: 'bold',
 }
 
 export default function Index() {
@@ -38,6 +49,22 @@ export default function Index() {
 				}}>
 					Арсенал
 				</Button>
+				<Button variant='contained' href='/new' sx={{
+					backgroundColor: '#b5303096',
+					ml: 1,
+					mt: 2,
+				}}>
+					Продати
+				</Button>
+				<Form
+					method='get'
+					action={`/auth/${SocialsProvider.GOOGLE}`}
+				>
+					<button style={BUTTON_STYLES}>Login with Google</button>
+				</Form>
+				<Form action='/auth/logout' method='post'>
+					<button style={BUTTON_STYLES}>Logout</button>
+				</Form>
 			</Container>
 			<Outlet />
 		</Box>

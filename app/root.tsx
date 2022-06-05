@@ -1,20 +1,22 @@
 import {
 	Links,
-	LinksFunction,
 	LiveReload,
 	Meta,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
 } from 'remix'
-import type { MetaFunction } from 'remix'
+import type { MetaFunction , LinksFunction} from 'remix'
 import { ROBOTO_FONT_URL } from '~/shared/const'
+import { useLoaderData } from 'remix'
+import { loadPublicEnvVariables } from './loaders/env'
 
 import globalStyle from '~/styles/global.css'
-import { Box, CssBaseline, Link } from '@mui/material'
+import { Box, CssBaseline } from '@mui/material'
 
 import Footer from './src/components/footer'
 import Header from './src/components/header'
+import GoogleOneTap from './src/components/googleOneTap'
 
 export const links: LinksFunction = () => {
 	return [
@@ -29,7 +31,16 @@ export const meta: MetaFunction = () => {
 	}
 }
 
+export async function loader() {
+	return {
+		env: loadPublicEnvVariables()
+	}
+}
+
 export default function App() {
+	const loaderData = useLoaderData()
+	const env = loaderData.env
+
 	return (
 		<html lang='en'>
 			<head>
@@ -55,6 +66,7 @@ export default function App() {
 
 				<ScrollRestoration />
 				<Scripts />
+				<GoogleOneTap />
 				<LiveReload />
 			</body>
 		</html>
