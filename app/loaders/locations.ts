@@ -1,5 +1,5 @@
-import { prisma } from '~/database/prisma'
-import { Location, Prisma } from '@prisma/client'
+import { prisma } from 'database/prisma'
+import type { Location, Prisma } from '@prisma/client'
 
 const PARENT_LOCATION_ID = 0
 

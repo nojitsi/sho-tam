@@ -1,31 +1,56 @@
 import { PrismaClient, UserRole } from '@prisma/client'
+import fs from 'fs'
+
 const prisma = new PrismaClient()
 
 async function main() {
+	await Promise.all([setupCities(), setupUsers(), setupAdTypes()])
+}
+
+const setupCities = async () => {
 	const ukraineLocation = await prisma.location.create({
 		data: {
 			id: 0,
-			name: 'Вся Україна',
-			parentId: 0,
+			name: 'Україна',
 		},
 	})
-	const testLocation = await prisma.location.create({
-		data: {
-			name: 'Тестова локація',
-			parentId: 0,
-		},
-	})
+	
+	const locationsRawData = fs.readFileSync('data/cities/ua.json')
+	const locationsData = JSON.parse(locationsRawData.toString())
+	const regions = locationsData.regions
+
+	for (const regionData of regions) {
+		const region = await prisma.location.create({
+			data: {
+				name: regionData.name,
+				parent: { connect: { id: ukraineLocation.id } },
+			},
+		})
+
+		for (const cityData of regionData.cities) {
+			await prisma.location.create({
+				data: {
+					name: cityData.name,
+					parent: { connect: { id: region.id } },
+				},
+			})
+		}
+	}
+}
+
+const setupUsers = async () => {
 	const admin = await prisma.user.create({
 		data: {
 			name: 'Злюка адмін',
 			phone: '123456789',
 			email: 'admin@gmail.com',
 			emailVerified: true,
-			docsVerified: true,
 			role: UserRole.ADMIN,
 		},
 	})
+}
 
+const setupAdTypes = async () => {
 	const adTypes = await prisma.goodTypes.createMany({
 		data: [
 			{

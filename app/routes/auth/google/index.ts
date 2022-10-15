@@ -1,4 +1,4 @@
-import { authenticator } from '../../../services/auth'
+import { authenticator } from '~/services/auth'
 import { SocialsProvider } from 'remix-auth-socials'
 import type { ActionFunction, LoaderFunction } from 'remix'
 

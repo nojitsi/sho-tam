@@ -8,7 +8,8 @@
     "build": "node -r dotenv/config ./node_modules/.bin/remix build",
     "dev": "node -r dotenv/config ./node_modules/.bin/remix dev",
     "postinstall": "remix setup node",
-    "start": "node -r dotenv/config ./node_modules/.bin/remix-serve build"
+    "start": "node -r dotenv/config ./node_modules/.bin/remix-serve build",
+    "migrate": "npx prisma migrate dev"
   },
   "dependencies": {
     "@emotion/react": "^11.8.2",
@@ -33,7 +34,6 @@
   },
   "devDependencies": {
     "@remix-run/dev": "^1.2.3",
-    "@remix-run/eslint-config": "^1.2.3",
     "@types/jfs": "^0.2.5",
     "@types/lodash": "^4.14.179",
     "@types/node": "^17.0.27",
@@ -41,8 +41,6 @@
     "@types/react-dom": "^17.0.9",
     "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/parser": "^5.16.0",
-    "eslint": "^8.9.0",
-    "eslint-plugin-react": "^7.29.4",
     "prisma": "^3.11.1",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.3"
@@ -51,6 +49,6 @@
     "node": ">=14"
   },
   "prisma": {
-    "seed": "ts-node app/database/seed.ts"
+    "seed": "ts-node database/seed.ts"
   }
 }

@@ -1,14 +1,15 @@
 import invariant from 'tiny-invariant'
-import type { ActionFunction} from 'remix'
-import { unstable_createFileUploadHandler, unstable_parseMultipartFormData } from 'remix'
-import { redirect, Form, useActionData, useTransition } from 'remix'
+import type {ActionFunction} from 'remix'
+import {unstable_createFileUploadHandler, unstable_parseMultipartFormData} from 'remix'
+import {redirect, Form, useActionData, useTransition} from 'remix'
 
-import { createTradeAd } from '~/loaders/tradeAd'
+import {createTradeAd} from '~/loaders/tradeAd'
 
 import transformToKebabCase from '~/helpers/transformToKebabCase'
+import { Autocomplete, Container, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 
 type TradeAddCreationError = {
-  title?: string;
+	title?: string;
 	description?: string;
 	price?: string;
 	locationId?: string;
@@ -18,7 +19,7 @@ type TradeAddCreationError = {
 	images?: string;
 };
 
-export const action: ActionFunction = async ({ request }) => { 
+export const action: ActionFunction = async ({request}) => {
 	const outerImageFolderPath = '/images'
 	const innerImageFolderPath = 'public' + outerImageFolderPath
 
@@ -26,7 +27,7 @@ export const action: ActionFunction = async ({ request }) => {
 	const uploadHandler = unstable_createFileUploadHandler({
 		directory: innerImageFolderPath,
 		maxFileSize: 10000000, //bytes
-		file: ({ filename }) => filename,
+		file: ({filename}) => filename,
 	})
 
 	const formData = await unstable_parseMultipartFormData(
@@ -39,12 +40,16 @@ export const action: ActionFunction = async ({ request }) => {
 	const locationId = Number(formData.get('locationId'))
 	const price = Number(formData.get('price'))
 	const typeId = Number(formData.get('typeId'))
-	const kit = formData.getAll('kit').map(kitItem => {return {title: kitItem.toString()}})
+	const kit = formData.getAll('kit').map(kitItem => {
+		return {title: kitItem.toString()}
+	})
 
-	const images = formData.getAll('images').map((image: any) => {return {
-		name: image.name,
-		path: outerImageFolderPath + '/' + image.name,
-	}})
+	const images = formData.getAll('images').map((image: any) => {
+		return {
+			name: image.name,
+			path: outerImageFolderPath + '/' + image.name,
+		}
+	})
 
 	//validation
 	const errors: TradeAddCreationError = {}
@@ -70,11 +75,12 @@ export const action: ActionFunction = async ({ request }) => {
 
 	//images
 
-	const result = await createTradeAd({ 
+	const result = await createTradeAd({
 		title,
 		description,
 		price,
 		url,
+		contact: 'Random Number',
 		type: {
 			connect: {
 				id: typeId
@@ -103,7 +109,9 @@ export const action: ActionFunction = async ({ request }) => {
 		}
 	})
 
-	return redirect('/admin')
+	return redirect('/', {
+		statusText: 'Success ad'
+	})
 }
 
 export default function NewPost() {
@@ -111,43 +119,76 @@ export default function NewPost() {
 	const transition = useTransition()
 
 	return (
-		<Form method='post' encType='multipart/form-data'>
+		<Container component='main' sx={{ mt: 2, mb: 2, backgroundColor: 'common.white' }} maxWidth='sm'>
+
+		<Form method="post" encType="multipart/form-data">
 			<p>
 				<label>
-          Заголовок:{' '}
+					Заголовок:{' '}
 					{errors?.title ? (
 						<em>Заголовок</em>
 					) : null}
-					<input type='text' name='title' />
 				</label>
+				<input type="text" name="title"/>
 			</p>
 
 			<p>
-				<label htmlFor='description'>Опис:</label>{' '}
+				<FormControl fullWidth>
+					<InputLabel id="demo-simple-select-label">срака</InputLabel>
+					<Select
+						labelId="demo-simple-select-label"
+						id="demo-simple-select"
+						
+						label="срака"
+						//onChange={(handleChange)}
+					>
+						<MenuItem value={10}>пістоль</MenuItem>
+						<MenuItem value={20}>дробаш</MenuItem>
+						<MenuItem value={30}>кулемет бляха</MenuItem>
+					</Select>
+				</FormControl>
+				<input type="number" name="typeId" value={1} hidden/>
+			</p>
+
+			<p>
+				<label htmlFor="description">Опис:</label>{' '}
 				{errors?.markdown ? (
 					<em>Опис</em>
 				) : null}
-				<br />
-				<textarea id='description' rows={20} name='description' />
+				<br/>
+				<textarea id="description" rows={20} name="description"/>
 			</p>
 
 			<p>
 				<label>
-          Ціна:{' '}
+					Ціна:{' '}
 					{errors?.title ? (
 						<em>Ціна</em>
 					) : null}
-					<input type='number' name='price' />
+					<input type="number" name="price"/>
 				</label>
 			</p>
 
-			
-			<input type='number' name='locationId' />
-			<input type='number' name='typeId' value={1} />
-			<input type='file' name='images' multiple={true}/>
-			
 			<p>
-				<button type='submit'>
+				<label>
+					{errors?.title ? (
+						<em>Локація</em>
+					) : null}
+				</label>
+				<Autocomplete
+						disablePortal
+						id="combo-box-demo"
+						options={['r', 'b', 'c']}
+						sx={{ width: 300 }}
+						renderInput={(params) => <TextField {...params} label="Локація" />}
+					/>
+					<input type="number" name="locationId"/>
+			</p>
+
+			<input type="file" name="images" accept="image/png, image/webp, image/jpeg" multiple={true}/>
+
+			<p>
+				<button type="submit">
 					{
 						transition.submission
 							? 'Завантаження зброї...'
@@ -156,5 +197,7 @@ export default function NewPost() {
 				</button>
 			</p>
 		</Form>
+
+		</Container>
 	)
 }

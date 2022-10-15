@@ -13,14 +13,16 @@ enum UserRole {
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  name  String
+  id   Int    @id @default(autoincrement())
+  name String
 
   email         String  @unique
   emailVerified Boolean @default(false)
 
-  role      UserRole        @default(USER)
-  posts     TradeAd[]
+  phone String
+
+  role  UserRole  @default(USER)
+  posts TradeAd[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -81,7 +83,7 @@ model Location {
 
   childs   Location[] @relation("location")
   parent   Location?  @relation(fields: [parentId], references: [id], name: "location")
-  parentId Int?        @default(0)
+  parentId Int?
 
   TradeAd TradeAd[]
 }

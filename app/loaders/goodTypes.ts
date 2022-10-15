@@ -1,5 +1,5 @@
-import { prisma } from '~/database/prisma'
-import { GoodTypes, Prisma } from '@prisma/client'
+import { prisma } from 'database/prisma'
+import type { GoodTypes, Prisma } from '@prisma/client'
 
 export const getGoodTypes = async (): Promise<GoodTypes[]> => {
 	return await prisma.goodTypes.findMany({})
