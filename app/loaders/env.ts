@@ -1,6 +1,13 @@
-export const loadPublicEnvVariables  = () => {
+export const publicEnvVariables = () => {
 	return {
-		OAUTH_REDIRECT_PATH: process.env.OAUTH_REDIRECT_PATH,
-		OAUTH_CLIENT_ID: process.env.OAUTH_CLIENT_ID
+		GOOGLE_OAUTH_CLIENT_ID: process.env.GOOGLE_OAUTH_CLIENT_ID,
+		GOOGLE_OAUTH_REDIRECT_PATH: process.env.GOOGLE_OAUTH_REDIRECT_PATH,
+		GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH: process.env.GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH,
+	}
+}
+
+export const privateEnvVariables = () => {
+	return {
+		GOOGLE_OAUTH_CLIENT_SECRET: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
 	}
 }

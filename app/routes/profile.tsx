@@ -1,5 +1,5 @@
-import { Link } from 'remix'
 import { Box, Typography } from '@mui/material'
+import { Link } from '@remix-run/react'
 
 export default function Profile() {
 	return (

@@ -8,10 +8,12 @@ async function main() {
 }
 
 const setupCities = async () => {
+	const countryPath = '0'
 	const ukraineLocation = await prisma.location.create({
 		data: {
 			id: 0,
 			name: 'Україна',
+			path: countryPath
 		},
 	})
 	
@@ -20,19 +22,39 @@ const setupCities = async () => {
 	const regions = locationsData.regions
 
 	for (const regionData of regions) {
-		const region = await prisma.location.create({
+		let region = await prisma.location.create({
 			data: {
 				name: regionData.name,
 				parent: { connect: { id: ukraineLocation.id } },
+				path: ''
 			},
+		})
+		const regionPath = countryPath + ', ' + region.id
+		region = await prisma.location.update({
+			where: {
+				id: region.id
+			},
+			data: {
+				path: regionPath
+			}
 		})
 
 		for (const cityData of regionData.cities) {
-			await prisma.location.create({
+			let city = await prisma.location.create({
 				data: {
 					name: cityData.name,
 					parent: { connect: { id: region.id } },
+					path: ''
 				},
+			})
+			const cityPath = regionPath + ', ' + city.id
+			city = await prisma.location.update({
+				where: {
+					id: city.id
+				},
+				data: {
+					path: cityPath
+				}
 			})
 		}
 	}
@@ -42,7 +64,6 @@ const setupUsers = async () => {
 	const admin = await prisma.user.create({
 		data: {
 			name: 'Злюка адмін',
-			phone: '123456789',
 			email: 'admin@gmail.com',
 			emailVerified: true,
 			role: UserRole.ADMIN,

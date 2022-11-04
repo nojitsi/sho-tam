@@ -1,31 +1,28 @@
 import { Box } from '@mui/material'
-import type { LoaderFunction} from 'remix'
-import { useLoaderData } from 'remix'
-import { authenticator } from '~/services/auth'
+import { LoaderFunction } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
+import { authenticator } from '~/service/auth'
 
 export const loader: LoaderFunction = async ({ request }) => {
-	// authenticator.isAuthenticated function returns the user object if found
-	// if user is not authenticated then user would be redirected back to homepage ("/" route)
-	const user = await authenticator.isAuthenticated(request, {
-		failureRedirect: '/',
-	})
+  const user = await authenticator.isAuthenticated(request, {
+    failureRedirect: '/auth/login',
+  })
 
-	return {
-		user,
-	}
+  return {
+    user,
+  }
 }
 
 export default function List() {
-	const { user } = useLoaderData()
-	console.log(user)
+  const { user } = useLoaderData()
+  console.log({ listUser: user })
 
-	return (
-		<Box
-			sx={{
-				display: 'flex',
-				flexDirection: 'column'
-			}}
-		>
-		</Box>
-	)
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    ></Box>
+  )
 }

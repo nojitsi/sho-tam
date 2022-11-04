@@ -1,16 +1,15 @@
-import { prisma } from 'database/prisma'
+import { prisma } from 'database/prisma.server'
 import type { TradeAd, Prisma } from '@prisma/client'
-
 interface TradeAdMap {
   [key: string]: TradeAd;
 }
 
 export const getTradeAdsList = async (args: Prisma.TradeAdFindManyArgs): Promise<TradeAd[]> => {
-	return await prisma.tradeAd.findMany(args)
+	return prisma.tradeAd.findMany(args)
 }
 
 export const getTradeAdById = async (id: number): Promise<TradeAd | null> => {
-	return await prisma.tradeAd.findUnique({
+	return prisma.tradeAd.findUnique({
 		where: {
 			id,
 		},
@@ -18,7 +17,7 @@ export const getTradeAdById = async (id: number): Promise<TradeAd | null> => {
 }
 
 export const getTradeAdByUrl = async (url: string): Promise<TradeAd | null> => {
-	return await prisma.tradeAd.findUnique({
+	return prisma.tradeAd.findUnique({
 		where: {
 			url,
 		},

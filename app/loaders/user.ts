@@ -1,4 +1,4 @@
-import { prisma } from 'database/prisma'
+import { prisma } from 'database/prisma.server'
 import type { User, Prisma } from '@prisma/client'
 
 export const getUserById = async (id: number): Promise<User | null> => {
@@ -22,6 +22,14 @@ export async function createUser(user: Prisma.UserCreateInput)
 	//добавить создание связей
 	return prisma.user.create({
 		data: user
+	})
+}
+
+export const findOrCreateUser =async (where: Prisma.UserWhereUniqueInput, create: Prisma.UserCreateInput) => {
+	return prisma.user.upsert({
+		where,
+		create,
+		update: {}
 	})
 }
 

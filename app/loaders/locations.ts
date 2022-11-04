@@ -1,12 +1,25 @@
-import { prisma } from 'database/prisma'
-import type { Location, Prisma } from '@prisma/client'
+import { Prisma, Location } from '@prisma/client'
+import { prisma } from 'database/prisma.server'
 
-const PARENT_LOCATION_ID = 0
+const ROOT_LOCATION_PARENT_ID = null
 
-export const getLocationTreeParents = async (): Promise<Location[]> => {
-	return await prisma.location.findMany({
+export type LocationLeaf = {
+	data: Location,
+	children: LocationLeaf[]
+}
+
+export const getLocationTree = async (parentId?: number): Promise<LocationLeaf[]> => {
+	const locationLevel = await getLocationLevelList(parentId ?? ROOT_LOCATION_PARENT_ID);
+	return Promise.all(locationLevel.map(async (locationData) => ({
+		data: locationData,
+		children: await getLocationTree(locationData.id)
+	})))
+}
+
+export const getLocationLevelList = async (parentId: number | null): Promise<Location[]> => {
+	return prisma.location.findMany({
 		where: {
-			parentId: PARENT_LOCATION_ID
+			parentId
 		}
 	})
 }

@@ -1,17 +1,8 @@
-import { authenticator } from '~/services/auth'
+import { authenticator } from '~/service/auth'
 import { SocialsProvider } from 'remix-auth-socials'
-import type { ActionFunction, LoaderFunction } from 'remix'
-
-export const action: ActionFunction = async ({ request }) => {
-	console.log('google auth post')
-	return await authenticator.authenticate(SocialsProvider.GOOGLE, request, {
-		successRedirect: '/list',
-		failureRedirect: '/',
-	})
-}
+import type { LoaderFunction } from 'remix'
 
 export const loader: LoaderFunction = async ({ request }) => {
-	console.log('Google auth get')
 	return await authenticator.authenticate(SocialsProvider.GOOGLE, request, {
 		successRedirect: '/list',
 		failureRedirect: '/',

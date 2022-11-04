@@ -1,5 +1,5 @@
 import {Box, Container, Typography, Button} from '@mui/material'
-import {Form, useSearchParams} from 'remix'
+import { Form } from '@remix-run/react'
 import {SocialsProvider} from 'remix-auth-socials'
 
 const BUTTON_STYLES = {
