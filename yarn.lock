@@ -5022,10 +5022,10 @@
   "resolved" "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz"
   "version" "2.1.3"
 
-"mui-tree-select@^1.0.0-beta.7":
-  "integrity" "sha512-4wM7Rus+VTaQJFZFvk59wd+REulItJkYwYHbMWClBy1aR3e9h6IubZHKGAfhLaLoumNEZg+Ir6SLgw04k3tsDg=="
-  "resolved" "https://registry.npmjs.org/mui-tree-select/-/mui-tree-select-1.0.0-beta.7.tgz"
-  "version" "1.0.0-beta.7"
+"mui-tree-select-common-js@^1.0.0-beta.9.0.2":
+  "integrity" "sha512-t8RUbdnB8yeB+u/Nw4aE2gNNNYPctNgM7gvM0xVc80EngBkSk8vgWQBol5Z0W4tt2gmbzXjaqKxJv4IjzkXyqw=="
+  "resolved" "https://registry.npmjs.org/mui-tree-select-common-js/-/mui-tree-select-common-js-1.0.0-beta.9.0.2.tgz"
+  "version" "1.0.0-beta.9.0.2"
 
 "mute-stream@0.0.8":
   "integrity" "sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA=="

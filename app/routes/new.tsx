@@ -4,7 +4,6 @@ import { createTradeAd } from '~/loaders/tradeAd'
 
 import transformToKebabCase from '~/helpers/transformToKebabCase'
 import {
-  Autocomplete,
   Box,
   Container,
   FormControl,
@@ -22,13 +21,17 @@ import {
   redirect,
   LoaderFunction,
 } from '@remix-run/node'
-import { useActionData, useTransition, Form, useLoaderData } from '@remix-run/react'
+import {
+  useActionData,
+  useTransition,
+  Form,
+  useLoaderData,
+} from '@remix-run/react'
 import { getGoodTypes } from '~/loaders/goodTypes'
-import { getLocationTree, LocationLeaf } from '~/loaders/locations'
+import { getLocationTreeData } from '~/loaders/locations'
 import { GoodTypes } from '@prisma/client'
 import { authenticator } from '~/service/auth'
 import { LocationSelect } from '~/src/components/location-select'
-import TreeSelect from 'mui-tree-select'
 
 const outerImageFolderPath = '/images'
 const innerImageFolderPath = 'public' + outerImageFolderPath
@@ -126,6 +129,7 @@ export const action: ActionFunction = async ({ request }: any) => {
         data: images,
       },
     },
+    locationPath: '',
   })
 
   return redirect('/', {
@@ -135,14 +139,14 @@ export const action: ActionFunction = async ({ request }: any) => {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const goodTypes = await getGoodTypes()
-  const locationTree = await getLocationTree()
+  const locationTreeData = await getLocationTreeData()
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: '/auth/login',
   })
 
   return {
     goodTypes,
-    locationTree,
+    locationTreeData,
   }
 }
 
@@ -151,14 +155,20 @@ const currencies = ['₴', '$', '€', '฿']
 export default function NewPost() {
   const transition = useTransition()
   const errors = useActionData() ?? { category: '' }
-  const { goodTypes, locationTree } = useLoaderData()
+  const { goodTypes, locationTreeData } = useLoaderData()
+
   return (
     <Container
       component="main"
       sx={{ mt: 2, mb: 2, backgroundColor: 'common.white', padding: 3 }}
       maxWidth="sm"
     >
-      <Form method="post" encType="multipart/form-data" autoComplete="off" autoSave="on">
+      <Form
+        method="post"
+        encType="multipart/form-data"
+        autoComplete="off"
+        autoSave="on"
+      >
         <TextField
           id="title-input"
           label="Заголовок"
@@ -203,7 +213,11 @@ export default function NewPost() {
               </MenuItem>
             ))}
           </Select>
-          {errors?.category ? <FormHelperText>{errors?.category}</FormHelperText> : ''}
+          {errors?.category ? (
+            <FormHelperText>{errors?.category}</FormHelperText>
+          ) : (
+            ''
+          )}
         </FormControl>
 
         <TextField
@@ -227,7 +241,13 @@ export default function NewPost() {
             justifyContent: 'space-between',
           }}
         >
-          <TextField name="price" label="Ціна" type={'number'} sx={{ width: '80%' }} required />
+          <TextField
+            name="price"
+            label="Ціна"
+            type={'number'}
+            sx={{ width: '80%' }}
+            required
+          />
           <TextField
             id="currency-input"
             name="currency"
@@ -262,12 +282,7 @@ export default function NewPost() {
         </Box>
 
         <FormControl sx={{ mt: 2 }} fullWidth error={!!errors?.location}>
-          <TreeSelect
-            getChildren={(node: any) => (node ? node.children : locationTree)}
-            getParent={(node: any) => node}
-            renderInput={(params: any) => <TextField {...params} />}
-          />
-          {/* <LocationSelect locationTree={locationTree} /> */}
+          <LocationSelect locationTreeData={locationTreeData} />
         </FormControl>
 
         <input
@@ -279,7 +294,9 @@ export default function NewPost() {
 
         <p>
           <button type="submit">
-            {transition.submission ? 'Завантаження зброї...' : 'Додати в арсенал'}
+            {transition.submission
+              ? 'Завантаження зброї...'
+              : 'Додати в арсенал'}
           </button>
         </p>
       </Form>
