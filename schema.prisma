@@ -41,7 +41,6 @@ model TradeAd {
   id          Int    @id @default(autoincrement())
   title       String
   description String
-  url         String @unique
   price       Int
   contact     String
   views       Int    @default(0)

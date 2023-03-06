@@ -20,6 +20,8 @@ import {
   unstable_parseMultipartFormData,
   redirect,
   LoaderFunction,
+  unstable_createMemoryUploadHandler,
+  unstable_composeUploadHandlers,
 } from '@remix-run/node'
 import {
   useActionData,
@@ -28,10 +30,15 @@ import {
   useLoaderData,
 } from '@remix-run/react'
 import { getGoodTypes } from '~/loaders/goodTypes'
-import { getLocationTreeData } from '~/loaders/locations'
+import { getLocationTreeData, ROOT_LOCATION_ID } from '~/loaders/locations'
 import { GoodTypes } from '@prisma/client'
 import { authenticator } from '~/service/auth'
-import { LocationSelect } from '~/src/components/location-select'
+import {
+  LocationSelect,
+  locationSelectLinks,
+} from '~/src/components/location-select'
+import React from 'react'
+import { getFormMocks } from '~/loaders/mocks'
 
 const outerImageFolderPath = '/images'
 const innerImageFolderPath = 'public' + outerImageFolderPath
@@ -41,25 +48,34 @@ type TradeAddCreationError = {
   description?: string
   price?: string
   locationId?: string
+  locationPath?: string
   url?: string
   typeId?: string
   kit?: string
   images?: string
 }
 
+export const links = () => [...locationSelectLinks()]
+
 export const action: ActionFunction = async ({ request }: any) => {
   //maybee check content
-  const uploadHandler = unstable_createFileUploadHandler({
-    directory: innerImageFolderPath,
-    maxPartSize: 10000000, //bytes
-    file: ({ filename }: any) => filename,
-  })
+  // const formData = await request.formData()
+
+  const uploadHandler = unstable_composeUploadHandlers(
+    unstable_createFileUploadHandler({
+      directory: innerImageFolderPath,
+      maxPartSize: 10000000, //bytes
+      file: ({ filename }: any) => filename,
+    }),
+    unstable_createMemoryUploadHandler(),
+  )
 
   const formData = await unstable_parseMultipartFormData(request, uploadHandler)
 
-  const title = formData.get('title')
-  const description = formData.get('description')
+  const title = await formData.get('title')
+  const description = await formData.get('description')
   const locationId = Number(formData.get('locationId'))
+  const locationPath = await formData.get('locationPath')
   const price = Number(formData.get('price'))
   const typeId = Number(formData.get('typeId'))
   const kit = formData.getAll('kit').map((kitItem: any) => {
@@ -76,11 +92,12 @@ export const action: ActionFunction = async ({ request }: any) => {
   //validation
   const errors: TradeAddCreationError = {}
 
-  if (!title) errors.title = 'err'
-  if (!description) errors.description = 'err'
-  if (!price) errors.price = 'err'
-  if (!locationId) errors.locationId = 'err'
-  if (!typeId) errors.typeId = 'err'
+  if (!title) errors.title = 'Provide title'
+  if (!description) errors.description = 'Provide description'
+  if (!price) errors.price = 'Provide prive'
+  if (!locationId) errors.locationId = 'Provide location id'
+  if (!locationPath) errors.locationPath = 'Provide location path'
+  if (!typeId) errors.typeId = 'Provide weapon type type'
 
   if (Object.keys(errors).length) {
     return errors
@@ -90,9 +107,9 @@ export const action: ActionFunction = async ({ request }: any) => {
   invariant(typeof description === 'string')
   invariant(typeof price === 'number')
   invariant(typeof locationId === 'number')
+  invariant(typeof locationPath === 'string')
   invariant(typeof typeId === 'number')
 
-  const url = transformToKebabCase(title)
   const authorId = 1
 
   //images
@@ -101,7 +118,6 @@ export const action: ActionFunction = async ({ request }: any) => {
     title,
     description,
     price,
-    url,
     contact: 'Random Number',
     type: {
       connect: {
@@ -129,7 +145,7 @@ export const action: ActionFunction = async ({ request }: any) => {
         data: images,
       },
     },
-    locationPath: '',
+    locationPath,
   })
 
   return redirect('/', {
@@ -139,14 +155,16 @@ export const action: ActionFunction = async ({ request }: any) => {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const goodTypes = await getGoodTypes()
-  const locationTreeData = await getLocationTreeData()
+  const locationTreeData = await getLocationTreeData(ROOT_LOCATION_ID)
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: '/auth/login',
   })
+  const mocks = getFormMocks()
 
   return {
     goodTypes,
     locationTreeData,
+    mocks,
   }
 }
 
@@ -155,7 +173,9 @@ const currencies = ['₴', '$', '€', '฿']
 export default function NewPost() {
   const transition = useTransition()
   const errors = useActionData() ?? { category: '' }
-  const { goodTypes, locationTreeData } = useLoaderData()
+  const { goodTypes, locationTreeData, mocks } = useLoaderData()
+
+  const [price, setPrice] = React.useState<string>(mocks?.price ?? '')
 
   return (
     <Container
@@ -179,8 +199,8 @@ export default function NewPost() {
           helperText={errors?.title}
           required
           fullWidth
+          defaultValue={mocks?.title}
         />
-
         <FormControl sx={{ mt: 2 }} fullWidth error={!!errors?.category}>
           <InputLabel id="category-label">Категорія *</InputLabel>
           <Select
@@ -190,6 +210,8 @@ export default function NewPost() {
             name="typeId"
             required
             //onChange={(handleChange)}
+            // ...(mocks?.typeId)
+            defaultValue={mocks?.typeId}
           >
             {goodTypes.map((goodType: GoodTypes) => (
               <MenuItem
@@ -219,7 +241,6 @@ export default function NewPost() {
             ''
           )}
         </FormControl>
-
         <TextField
           id="description-input"
           label="Опис"
@@ -233,8 +254,8 @@ export default function NewPost() {
           multiline
           required
           fullWidth
+          defaultValue={mocks?.description}
         />
-
         <Box
           sx={{
             display: 'flex',
@@ -244,8 +265,14 @@ export default function NewPost() {
           <TextField
             name="price"
             label="Ціна"
-            type={'number'}
             sx={{ width: '80%' }}
+            onChange={e => {
+              const regex = /^[0-9\b]+$/
+              if (e.target.value === '' || regex.test(e.target.value)) {
+                setPrice(e.target.value)
+              }
+            }}
+            value={price}
             required
           />
           <TextField
@@ -280,17 +307,18 @@ export default function NewPost() {
             ))}
           </TextField>
         </Box>
-
         <FormControl sx={{ mt: 2 }} fullWidth error={!!errors?.location}>
-          <LocationSelect locationTreeData={locationTreeData} />
+          <LocationSelect locationTreeData={locationTreeData} mocks={mocks} />
         </FormControl>
 
-        <input
-          type="file"
-          name="images"
-          accept="image/png, image/webp, image/jpeg"
-          multiple={true}
-        />
+        <FormControl sx={{ mt: 2 }} fullWidth error={!!errors?.images}>
+          <input
+            type="file"
+            name="images"
+            accept="image/png, image/webp, image/jpeg"
+            multiple={true}
+          />{' '}
+        </FormControl>
 
         <p>
           <button type="submit">

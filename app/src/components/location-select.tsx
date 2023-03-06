@@ -1,42 +1,115 @@
-import {
-  LocationsTreeBuilder,
-  LocationsTreeData,
-  ROOT_LOCATION_ID,
-} from '~/loaders/locations'
-import { Location } from '@prisma/client'
-import { TextField } from '@mui/material'
-import TreeSelect from 'mui-tree-select-common-js'
+import { LocationsTreeData } from '~/loaders/locations'
 
-export function LocationSelect({
-  locationTreeData,
-}: {
+import { Treeselect } from 'treeselectjs'
+import { useEffect } from 'react'
+
+import locationSelectStyles from '~/styles/location-select.css'
+import React from 'react'
+import { FormMocks } from '~/loaders/mocks'
+
+const LOCATION_SELECT_CONTAINER_ID = 'locationSelectContainerId'
+const LOCATION_PATH_INPUT_ID = 'locationPathInputId'
+const LOCATION_INPUT_ID = 'locationInputId'
+const DEFAULT_LOCATION_ID = 0
+
+export const locationSelectLinks = () => [
+  { rel: 'stylesheet', href: locationSelectStyles },
+]
+
+type LocationSelectProps = {
   locationTreeData: LocationsTreeData
-}) {
-  if (!locationTreeData) throw Error('Location tree is not provided')
+  mocks?: FormMocks
+}
 
-  const locationTreeBuilder = new LocationsTreeBuilder(locationTreeData)
+type LocationSelectState = {
+  selectedLocationId: number | undefined
+}
 
-  return (
-    <TreeSelect
-      getChildren={(node: any) => {
-        if (!node)
-          return locationTreeBuilder.getLocationTreeNodes([ROOT_LOCATION_ID])
+export class LocationSelect extends React.Component<
+  LocationSelectProps,
+  LocationSelectState
+> {
+  constructor(props: LocationSelectProps) {
+    super(props)
+    this.state = {
+      selectedLocationId: this.props.mocks?.locationId,
+    }
+  }
 
-        if (node.childIds && node.childIds.length !== 0)
-          return locationTreeBuilder.getLocationTreeNodes(node.childIds)
+  componentDidMount() {
+    const locationSelectContainer = document.getElementById(
+      LOCATION_SELECT_CONTAINER_ID,
+    ) as HTMLElement
 
-        return node.children
-      }}
-      getParent={(node: any) => {
-        console.log({ node })
-        node.value.parentId
-          ? locationTreeBuilder.getLocationTreeNode(node.value.parentId)
-          : null
-      }}
-      renderInput={(params: any) => {
-        // console.log({ ...params })
-        return <TextField {...params} />
-      }}
-    />
-  )
+    if (!locationSelectContainer)
+      throw Error('Location select container not found')
+
+    const locationHashMap = this.props.locationTreeData.locationHashMap
+    const setSelectedLocationId = (locationId: number | undefined) => {
+      this.setState({
+        selectedLocationId: locationId,
+      })
+    }
+
+    this.treeSelect = new Treeselect({
+      parentHtmlContainer: locationSelectContainer,
+      options: this.props.locationTreeData.locationTree,
+      placeholder: 'Оберіть місце',
+      emptyText: 'Місце не знайдено',
+      isSingleSelect: true,
+      showTags: false,
+      value: this.state.selectedLocationId,
+
+      inputCallback(value) {
+        const locationIdInput = document.getElementById(
+          LOCATION_INPUT_ID,
+        ) as HTMLInputElement
+        const locationPathInput = document.getElementById(
+          LOCATION_PATH_INPUT_ID,
+        ) as HTMLInputElement
+
+        if (!value) {
+          locationIdInput.value = ''
+          locationPathInput.value = ''
+
+          setSelectedLocationId(undefined)
+          return
+        }
+
+        const locationId = parseInt(value.toString())
+        const location = value ? locationHashMap[locationId] : undefined
+
+        locationIdInput.value = `${location?.id ?? ''}`
+        locationPathInput.value = location?.path ?? ''
+
+        setSelectedLocationId(locationId)
+      },
+    })
+  }
+
+  componentWillUnmount(): void {
+    this.treeSelect?.destroy()
+  }
+
+  render() {
+    return (
+      <div>
+        <input
+          name="locationId"
+          id={LOCATION_INPUT_ID}
+          value={this.props.mocks?.locationId ?? ''}
+          hidden
+        />
+        <input
+          name="locationPath"
+          id={LOCATION_PATH_INPUT_ID}
+          value={this.props.mocks?.locationPath ?? ''}
+          hidden
+        />
+        <div id={LOCATION_SELECT_CONTAINER_ID}></div>
+      </div>
+    )
+  }
+
+  private treeSelect?: Treeselect
 }

@@ -16,14 +16,6 @@ export const getTradeAdById = async (id: number): Promise<TradeAd | null> => {
 	})
 }
 
-export const getTradeAdByUrl = async (url: string): Promise<TradeAd | null> => {
-	return prisma.tradeAd.findUnique({
-		where: {
-			url,
-		},
-	})
-}
-
 export async function createTradeAd(ad: Prisma.TradeAdCreateInput)
 {
 	//добавить создание связей
