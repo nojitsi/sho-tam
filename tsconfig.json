@@ -8,10 +8,10 @@
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    
+
     "target": "ES2019",
     "strict": true,
-    
+
     "noEmit": true,
     "allowJs": true,
 
@@ -19,6 +19,6 @@
     "sourceMap": true,
     "paths": {
       "~/*": ["./app/*"]
-    },
+    }
   }
 }

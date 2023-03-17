@@ -1,66 +1,86 @@
-import {Authenticator} from 'remix-auth'
-import {sessionStorage} from './session'
-import {GoogleStrategy, SocialsProvider} from 'remix-auth-socials'
+import { Authenticator } from 'remix-auth'
+import { sessionStorage } from './session'
+import { GoogleStrategy } from 'remix-auth-socials'
 import { FormStrategy } from 'remix-auth-form'
 import { verifyGoogleTokenAndGetInfo } from './google-auth'
 import { findOrCreateUser } from '~/loaders/user'
 import { privateEnvVariables, publicEnvVariables } from '~/loaders/env'
+import { PasswordlessStrategy } from 'remix-auth-passwordless'
+import { sendMail } from './mail'
 
 type UserDTO = {
-	name: string,
-	email: string,
-	emailVerified: boolean,
-	avatar: string,
+  name: string
+  email: string
+  avatar?: string
 }
 
 export enum AuthStrategies {
-	GOOGLE = 'google',
-	GOOGLE_ONE_TAP = 'google-one-tap'
+  GOOGLE = 'google',
+  GOOGLE_ONE_TAP = 'google-one-tap',
+  PASSWORDLESS = 'passwordless',
 }
 
 export const authenticator = new Authenticator(sessionStorage)
 
 const transformGoogleUserData = (userData: any): UserDTO => {
-	console.log({googleUserDataToTransform: userData})
-
-	return {
-		name: userData.name,
-		email: userData.email,
-		avatar: userData.picture,
-		emailVerified: userData.email_verified
-	}
+  return {
+    name: userData.name,
+    email: userData.email,
+    avatar: userData.picture,
+  }
 }
 
 const createUserIfNotExist = async (userDto: UserDTO) => {
-	return findOrCreateUser({ email: userDto.email }, userDto)
+  return findOrCreateUser({ email: userDto.email }, userDto)
 }
 
 // Configuring Google Strategy
 authenticator.use(
-	new GoogleStrategy(
-		{
-			clientID: String(publicEnvVariables().GOOGLE_OAUTH_CLIENT_ID),
-			clientSecret: String(privateEnvVariables().GOOGLE_OAUTH_CLIENT_SECRET),
-			callbackURL: `http://localhost:3000` + publicEnvVariables().GOOGLE_OAUTH_REDIRECT_PATH
-		},
-		(requsetData) => {
-			const userData = transformGoogleUserData(requsetData.profile._json)
-			return createUserIfNotExist(userData)
-		}
-	),
-	AuthStrategies.GOOGLE
+  new GoogleStrategy(
+    {
+      clientID: String(publicEnvVariables.GOOGLE_OAUTH_CLIENT_ID),
+      clientSecret: String(privateEnvVariables.GOOGLE_OAUTH_CLIENT_SECRET),
+      callbackURL:
+        `http://localhost:3000` + publicEnvVariables.GOOGLE_OAUTH_REDIRECT_PATH,
+    },
+    requsetData => {
+      const userData = transformGoogleUserData(requsetData.profile._json)
+      return createUserIfNotExist(userData)
+    },
+  ),
+  AuthStrategies.GOOGLE,
 )
 
 authenticator.use(
-	new FormStrategy(async ({ form }) => {
-		const token = String(form.get('credential')?.toString())
-		const tokenData = await verifyGoogleTokenAndGetInfo(token)
-		const userData = transformGoogleUserData(tokenData)
+  new FormStrategy(async ({ form }) => {
+    const token = String(form.get('credential')?.toString())
+    const tokenData = await verifyGoogleTokenAndGetInfo(token)
+    const userData = transformGoogleUserData(tokenData)
 
-		return await createUserIfNotExist(userData)
-	}),
-	AuthStrategies.GOOGLE_ONE_TAP
+    return await createUserIfNotExist(userData)
+  }),
+  AuthStrategies.GOOGLE_ONE_TAP,
 )
 
+authenticator.use(
+  new PasswordlessStrategy(
+    {
+      sendEmail: async options => {
+        await sendMail({
+          to: options.email,
+          from: 'magazinzbroi@gmail.com',
+          subject: 'Вхід Zbroya.in.ua',
+          html: `<p><strong>Перейдіть за посиланням для входу</strong></p><p>${options.accessLink}</p>`,
+        })
+      },
+      secret: privateEnvVariables.PASSWORD_LESS_SECRET as string,
+      useOneTimeCode: true,
+      callbackPath: '/auth/passwordless',
+    },
+    async data => {
+      return createUserIfNotExist({ email: data.email, name: data.email })
+    },
+  ),
+)
 
 // export const loginUser = ()

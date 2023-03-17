@@ -17,7 +17,6 @@ model User {
   name String
 
   email         String  @unique
-  emailVerified Boolean @default(false)
 
   avatar String?
 
@@ -41,9 +40,10 @@ model TradeAd {
   id          Int    @id @default(autoincrement())
   title       String
   description String
-  price       Int
+  price       String  
   contact     String
   views       Int    @default(0)
+  approoved   Boolean @default(false)
 
   location   Location @relation(fields: [locationId], references: [id])
   locationId Int
@@ -55,19 +55,12 @@ model TradeAd {
   type       GoodTypes @relation(fields: [goodTypeId], references: [id])
   goodTypeId Int
 
-  kit   TradeAdKitItems[]
-  image TradeAdImage[]
+  kit   String[]
+  images TradeAdImage[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-}
-
-model TradeAdKitItems {
-  id        Int      @id @default(autoincrement())
-  title     String
-  tradeAdId Int
-  tradeAd   TradeAd? @relation(fields: [tradeAdId], references: [id])
 }
 
 model GoodTypes {

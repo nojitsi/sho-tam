@@ -36,7 +36,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const user = await authenticator.isAuthenticated(request, {})
 
   return {
-    env: publicEnvVariables(),
+    env: publicEnvVariables,
     user,
   }
 }

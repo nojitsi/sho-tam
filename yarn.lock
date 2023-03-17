@@ -1492,7 +1492,7 @@
     "source-map-support" "^0.5.21"
     "stream-slice" "^0.1.2"
 
-"@remix-run/react@^1.0.0", "@remix-run/react@^1.14.0":
+"@remix-run/react@^1.0.0", "@remix-run/react@^1.14.0", "@remix-run/react@1.14.0":
   "integrity" "sha512-zwir/r49WKST7afHBVCSeB7FtMiZXkRYaBBZld49WmUJcheo3BrXGiZRtSCLtBWqe1eSI5jbOoe6K4EHJ8etEA=="
   "resolved" "https://registry.npmjs.org/@remix-run/react/-/react-1.14.0.tgz"
   "version" "1.14.0"
@@ -1516,7 +1516,7 @@
     "express" "^4.17.1"
     "morgan" "^1.10.0"
 
-"@remix-run/server-runtime@^1.0.0", "@remix-run/server-runtime@1.14.0":
+"@remix-run/server-runtime@*", "@remix-run/server-runtime@^1.0.0", "@remix-run/server-runtime@1.14.0":
   "integrity" "sha512-qkqfT7DDwVzLICtJxMGthIU4T7DVtLy+oxKAzOi9eiCFlr3aWqV30YJ5Kq6r/kP8tighlnHbj1uEo41+WbD8uA=="
   "resolved" "https://registry.npmjs.org/@remix-run/server-runtime/-/server-runtime-1.14.0.tgz"
   "version" "1.14.0"
@@ -1579,6 +1579,29 @@
     "estree-walker" "^2.0.1"
     "picomatch" "^2.2.2"
 
+"@sendgrid/client@^7.7.0":
+  "integrity" "sha512-SxH+y8jeAQSnDavrTD0uGDXYIIkFylCo+eDofVmZLQ0f862nnqbC3Vd1ej6b7Le7lboyzQF6F7Fodv02rYspuA=="
+  "resolved" "https://registry.npmjs.org/@sendgrid/client/-/client-7.7.0.tgz"
+  "version" "7.7.0"
+  dependencies:
+    "@sendgrid/helpers" "^7.7.0"
+    "axios" "^0.26.0"
+
+"@sendgrid/helpers@^7.7.0":
+  "integrity" "sha512-3AsAxfN3GDBcXoZ/y1mzAAbKzTtUZ5+ZrHOmWQ279AuaFXUNCh9bPnRpN504bgveTqoW+11IzPg3I0WVgDINpw=="
+  "resolved" "https://registry.npmjs.org/@sendgrid/helpers/-/helpers-7.7.0.tgz"
+  "version" "7.7.0"
+  dependencies:
+    "deepmerge" "^4.2.2"
+
+"@sendgrid/mail@^7.7.0":
+  "integrity" "sha512-5+nApPE9wINBvHSUxwOxkkQqM/IAAaBYoP9hw7WwgDNQPxraruVqHizeTitVtKGiqWCKm2mnjh4XGN3fvFLqaw=="
+  "resolved" "https://registry.npmjs.org/@sendgrid/mail/-/mail-7.7.0.tgz"
+  "version" "7.7.0"
+  dependencies:
+    "@sendgrid/client" "^7.7.0"
+    "@sendgrid/helpers" "^7.7.0"
+
 "@sindresorhus/is@^4.0.0":
   "integrity" "sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw=="
   "resolved" "https://registry.npmjs.org/@sindresorhus/is/-/is-4.6.0.tgz"
@@ -1622,6 +1645,11 @@
   "version" "4.0.6"
   dependencies:
     "@types/estree" "*"
+
+"@types/blueimp-load-image@^5.16.0":
+  "integrity" "sha512-Q2t0/xly180IV7Ybu5pGk9MC/lrnqPZtplLh3R5T0i2tnE8Nt20gtjkLtliCD/gAlQHHScrjmP607ee++FAgpg=="
+  "resolved" "https://registry.npmjs.org/@types/blueimp-load-image/-/blueimp-load-image-5.16.0.tgz"
+  "version" "5.16.0"
 
 "@types/cacheable-request@^6.0.1":
   "integrity" "sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw=="
@@ -2097,6 +2125,13 @@
   "resolved" "https://registry.npmjs.org/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz"
   "version" "1.0.5"
 
+"axios@^0.26.0":
+  "integrity" "sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-0.26.1.tgz"
+  "version" "0.26.1"
+  dependencies:
+    "follow-redirects" "^1.14.8"
+
 "babel-plugin-macros@^3.1.0":
   "integrity" "sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg=="
   "resolved" "https://registry.npmjs.org/babel-plugin-macros/-/babel-plugin-macros-3.1.0.tgz"
@@ -2182,6 +2217,11 @@
     "buffer" "^5.5.0"
     "inherits" "^2.0.4"
     "readable-stream" "^3.4.0"
+
+"blueimp-load-image@^5.16.0":
+  "integrity" "sha512-3DUSVdOtlfNRk7moRZuTwDmA3NnG8KIJuLcq3c0J7/BIr6X3Vb/EpX3kUH1joxUhmoVF4uCpDfz7wHkz8pQajA=="
+  "resolved" "https://registry.npmjs.org/blueimp-load-image/-/blueimp-load-image-5.16.0.tgz"
+  "version" "5.16.0"
 
 "body-parser@1.20.1":
   "integrity" "sha512-jWi7abTbYwajOytWCQc37VulmWiRae5RyTpaCyDcS5/lMdtwSz5lOpDE67srw/HYe35f1z3fDQw+3txg7gNtWw=="
@@ -2561,6 +2601,11 @@
     "path-key" "^3.1.0"
     "shebang-command" "^2.0.0"
     "which" "^2.0.1"
+
+"crypto-js@^4.1.1":
+  "integrity" "sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw=="
+  "resolved" "https://registry.npmjs.org/crypto-js/-/crypto-js-4.1.1.tgz"
+  "version" "4.1.1"
 
 "css-vendor@^2.0.8":
   "integrity" "sha512-x9Aq0XTInxrkuFeHKbYC7zWY8ai7qJ04Kxd9MnvbC1uO5DagxoHQjm4JvG+vCdXOoFtCjbL2XSZfxmoYa9uQVQ=="
@@ -3063,6 +3108,11 @@
     "signal-exit" "^3.0.3"
     "strip-final-newline" "^2.0.0"
 
+"exif-js@^2.3.0":
+  "integrity" "sha512-1Og9pAzG2FZRVlaavH8bB8BTeHcjMdJhKmeQITkX+uLRCD0xPtKAdZ2clZmQdJ56p9adXtJ8+jwrGp/4505lYg=="
+  "resolved" "https://registry.npmjs.org/exif-js/-/exif-js-2.3.0.tgz"
+  "version" "2.3.0"
+
 "exit-hook@2.2.1":
   "integrity" "sha512-eNTPlAD67BmP31LDINZ3U7HSF8l57TxOY2PmBJ1shpCvpnxBF93mWCE8YHBnXs8qiUZJc9WDcWIeC3a2HIAMfw=="
   "resolved" "https://registry.npmjs.org/exit-hook/-/exit-hook-2.2.1.tgz"
@@ -3233,6 +3283,11 @@
   "integrity" "sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ=="
   "resolved" "https://registry.npmjs.org/flatted/-/flatted-3.2.7.tgz"
   "version" "3.2.7"
+
+"follow-redirects@^1.14.8":
+  "integrity" "sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA=="
+  "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.2.tgz"
+  "version" "1.15.2"
 
 "for-each@^0.3.3":
   "integrity" "sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw=="
@@ -5640,6 +5695,14 @@
     "remix-auth" "^3.4.0"
     "uuid" "^8.3.2"
 
+"remix-auth-passwordless@^0.0.27":
+  "integrity" "sha512-iHZp3Ur54hRcqg5TnAcVEzSDSMZjcKADmqN4+BbEwRM9YdBo35MvI3jUFfwDDMuSeSidr49DPACH3FafRzrapg=="
+  "resolved" "https://registry.npmjs.org/remix-auth-passwordless/-/remix-auth-passwordless-0.0.27.tgz"
+  "version" "0.0.27"
+  dependencies:
+    "crypto-js" "^4.1.1"
+    "nanoid" "^3.3.4"
+
 "remix-auth-socials@^1.0.2":
   "integrity" "sha512-X0/tK3DI16R5XsOy2qKhgKa66NdoTcRLiUH5c5PFvBzetbogdX+7j/jgGFDa/t8Tf5nHUD1PlYN3LpR8CA8LgA=="
   "resolved" "https://registry.npmjs.org/remix-auth-socials/-/remix-auth-socials-1.0.2.tgz"
@@ -5648,7 +5711,7 @@
     "remix-auth" "^3.0.0"
     "remix-auth-oauth2" "^1.0.0"
 
-"remix-auth@^3.0.0", "remix-auth@^3.2.2", "remix-auth@^3.4.0":
+"remix-auth@^3.0.0", "remix-auth@^3.2.2", "remix-auth@^3.3.0", "remix-auth@^3.4.0":
   "integrity" "sha512-VRliJo9VRAS4sSYgMjYbi7rYRixPWU2Tb8PFZb06OIj0nONK/1KRzHf2+Y6VGZeIacepLVgan6g2IUJjayE2rQ=="
   "resolved" "https://registry.npmjs.org/remix-auth/-/remix-auth-3.4.0.tgz"
   "version" "3.4.0"
@@ -5659,6 +5722,10 @@
   "integrity" "sha512-FbAZy2mWMIAKww2p/U0FDybdTGy3pJl66Qt2qggJqj+lTRUSAptCiPlXypcSD7XBZvEd1oLH/YlyS3h/xl6LKQ=="
   "resolved" "https://registry.npmjs.org/remix/-/remix-1.14.0.tgz"
   "version" "1.14.0"
+  dependencies:
+    "@remix-run/node" "1.14.0"
+    "@remix-run/react" "1.14.0"
+    "@remix-run/server-runtime" "1.14.0"
 
 "require-like@>= 0.1.1":
   "integrity" "sha512-oyrU88skkMtDdauHDuKVrgR+zuItqr6/c//FXzvmxRGMexSDc6hNvJInGW3LL46n+8b50RykrvwSUIIQH2LQ5A=="

@@ -1,13 +1,13 @@
-export const publicEnvVariables = () => {
-	return {
-		GOOGLE_OAUTH_CLIENT_ID: process.env.GOOGLE_OAUTH_CLIENT_ID,
-		GOOGLE_OAUTH_REDIRECT_PATH: process.env.GOOGLE_OAUTH_REDIRECT_PATH,
-		GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH: process.env.GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH,
-	}
+export const publicEnvVariables = {
+  GOOGLE_OAUTH_CLIENT_ID: process.env.GOOGLE_OAUTH_CLIENT_ID,
+  GOOGLE_OAUTH_REDIRECT_PATH: process.env.GOOGLE_OAUTH_REDIRECT_PATH,
+  GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH:
+    process.env.GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH,
 }
 
-export const privateEnvVariables = () => {
-	return {
-		GOOGLE_OAUTH_CLIENT_SECRET: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-	}
+export const privateEnvVariables = {
+  GOOGLE_OAUTH_CLIENT_SECRET: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+  PASSWORD_LESS_SECRET: process.env.PASSWORD_LESS_SECRET,
+  MAIL_API_KEY: process.env.SENDGRID_MAIL_API_KEY,
 }
+

@@ -2,6 +2,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox'
 import AccessibleForwardIcon from '@mui/icons-material/AccessibleForward'
 import { AppBar, Box, Toolbar, Typography } from '@mui/material'
 import { Link, useLoaderData } from '@remix-run/react'
+import { themeColors } from '~/shared/colors'
 
 export default function Header() {
   const user = useLoaderData()
@@ -10,7 +11,7 @@ export default function Header() {
     <AppBar
       position="relative"
       sx={{
-        backgroundColor: '#56ae3d91',
+        backgroundColor: themeColors.semiTransperentGreen,
       }}
     >
       <Toolbar>
@@ -22,17 +23,11 @@ export default function Header() {
               alignItems: 'center',
             }}
           >
-            <AccessibleForwardIcon
-              sx={{
-                mr: 1,
-                fontSize: '1.5rem',
-                color: 'common.white',
-                display: 'block',
-              }}
-            />
+            <img src="/img/icons/ukraine.webp" />
             <Typography
               variant="h6"
               sx={{
+                ml: 1,
                 fontSize: '1.5rem',
                 color: 'common.white',
                 lineHeight: 1,
@@ -40,7 +35,7 @@ export default function Header() {
               }}
               noWrap
             >
-              Zbroyar
+              Zbroya.in.ua
             </Typography>
           </Box>
         </Link>

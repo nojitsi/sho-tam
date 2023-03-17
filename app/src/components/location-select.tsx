@@ -98,12 +98,14 @@ export class LocationSelect extends React.Component<
           name="locationId"
           id={LOCATION_INPUT_ID}
           value={this.props.mocks?.locationId ?? ''}
+          onChange={() => {}}
           hidden
         />
         <input
           name="locationPath"
           id={LOCATION_PATH_INPUT_ID}
           value={this.props.mocks?.locationPath ?? ''}
+          onChange={() => {}}
           hidden
         />
         <div id={LOCATION_SELECT_CONTAINER_ID}></div>
