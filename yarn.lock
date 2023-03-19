@@ -1492,7 +1492,7 @@
     "source-map-support" "^0.5.21"
     "stream-slice" "^0.1.2"
 
-"@remix-run/react@^1.0.0", "@remix-run/react@^1.14.0", "@remix-run/react@1.14.0":
+"@remix-run/react@^1.0.0", "@remix-run/react@^1.14.0":
   "integrity" "sha512-zwir/r49WKST7afHBVCSeB7FtMiZXkRYaBBZld49WmUJcheo3BrXGiZRtSCLtBWqe1eSI5jbOoe6K4EHJ8etEA=="
   "resolved" "https://registry.npmjs.org/@remix-run/react/-/react-1.14.0.tgz"
   "version" "1.14.0"
@@ -5719,13 +5719,9 @@
     "uuid" "^8.3.2"
 
 "remix@^1.14.0":
-  "integrity" "sha512-FbAZy2mWMIAKww2p/U0FDybdTGy3pJl66Qt2qggJqj+lTRUSAptCiPlXypcSD7XBZvEd1oLH/YlyS3h/xl6LKQ=="
-  "resolved" "https://registry.npmjs.org/remix/-/remix-1.14.0.tgz"
-  "version" "1.14.0"
-  dependencies:
-    "@remix-run/node" "1.14.0"
-    "@remix-run/react" "1.14.0"
-    "@remix-run/server-runtime" "1.14.0"
+  "integrity" "sha512-sBFl/qPnRX7pVGMhpE2PWDdQA+yus/z3IKly2y2ShT6C1WV34pyS7FI6Y99OF8JFO/6/cPCz0FzzorZQOo8myA=="
+  "resolved" "https://registry.npmjs.org/remix/-/remix-1.14.3.tgz"
+  "version" "1.14.3"
 
 "require-like@>= 0.1.1":
   "integrity" "sha512-oyrU88skkMtDdauHDuKVrgR+zuItqr6/c//FXzvmxRGMexSDc6hNvJInGW3LL46n+8b50RykrvwSUIIQH2LQ5A=="

@@ -34,19 +34,26 @@ import {
 import { getGoodTypes } from '~/loaders/goodTypes'
 import { getLocationTreeData, ROOT_LOCATION_ID } from '~/loaders/locations'
 import { GoodTypes, User } from '@prisma/client'
-import { authenticator } from '~/service/auth'
+import { getUserAuthData } from '~/service/auth'
 import {
   LocationSelect,
   locationSelectLinks,
-} from '~/src/components/location-select'
+} from '~/components/location-select'
 import React from 'react'
 import { getFormMocks } from '~/loaders/mocks'
-import { FileInput, fileInputLinks } from '~/src/components/file-input'
+import { FileInput, fileInputLinks } from '~/components/file-input'
 import crypto from 'crypto'
-import { KitInput } from '~/src/components/kit-input'
+import { KitInput } from '~/components/kit-input'
+import { themeColors } from '~/shared/colors'
+import { commitSession, getSession } from '~/service/session'
+import {
+  MESSAGE_COLOR_HEADER_KEY,
+  MESSAGE_HEADER_KEY,
+} from '~/components/message'
 
 const TEN_MB_IN_B = 10000000
 const MAX_NUMBER_OF_IMAGES = 10
+const LOGIN_FAILED_REDIRECT_LINK = '/auth/login?redirectTo=/new'
 
 const outerImageFolderPath = '/images'
 const innerImageFolderPath = 'public' + outerImageFolderPath
@@ -76,9 +83,7 @@ export const action: ActionFunction = async ({ request }: any) => {
   //maybee check content
   // const formData = await request.formData()
 
-  const user: User = (await authenticator.isAuthenticated(request, {
-    failureRedirect: '/auth/login',
-  })) as User
+  const user: User = await getUserAuthData(request, true, '/new')
 
   const imageFolderUniqueIdentifier = crypto.randomUUID()
   const uploadHandler = unstable_composeUploadHandlers(
@@ -186,11 +191,16 @@ export const action: ActionFunction = async ({ request }: any) => {
       locationPath,
     })
 
+    const session = await getSession(request.headers.get('Cookie'))
+    session.flash(MESSAGE_HEADER_KEY, 'Оголошення додано на сайт')
+    session.flash(MESSAGE_COLOR_HEADER_KEY, themeColors.darkGreen)
+
     return redirect('/', {
-      statusText: 'Success ad',
+      headers: {
+        'set-cookie': await commitSession(session),
+      },
     })
   } catch (ignored: unknown) {
-    console.log({ ignored: JSON.stringify(ignored) })
     removeImageFolder(imageFolderUniqueIdentifier)
     return {
       images: 'Зображення не може перевищувати обʼєм в 10Мб',
@@ -201,9 +211,7 @@ export const action: ActionFunction = async ({ request }: any) => {
 export const loader: LoaderFunction = async ({ request }) => {
   const goodTypes = await getGoodTypes()
   const locationTreeData = await getLocationTreeData(ROOT_LOCATION_ID)
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: '/auth/login',
-  })
+  const user = await getUserAuthData(request, true, '/new')
   const mocks = getFormMocks()
 
   return {

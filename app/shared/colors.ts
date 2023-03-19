@@ -7,7 +7,7 @@ const semiTransperentGreen = '#98C53D90'
 const red = '#E55934'
 const semiTransperentRed = '#E5593496'
 const orange = '#FA7921'
-
+const orangeSemiTransperent = '#fa7921b5'
 const appleRedSemiTransperent = '#b5303096'
 
 export const themeColors = {
@@ -16,9 +16,10 @@ export const themeColors = {
   yellowShadow,
   green,
   semiTransperentGreen,
+  darkGreen,
   red,
   semiTransperentRed,
   appleRedSemiTransperent,
   orange,
-  darkGreen,
+  orangeSemiTransperent,
 }

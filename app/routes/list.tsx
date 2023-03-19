@@ -1,10 +1,9 @@
 import { Box } from '@mui/material'
-import { Container } from '@mui/system'
 import { GoodTypes, TradeAd, TradeAdImage } from '@prisma/client'
 import { LoaderFunction } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
 import { getTradeAdsList } from '~/loaders/tradeAd'
-import { authenticator } from '~/service/auth'
+import { getUserAuthData } from '~/service/auth'
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined'
 import { themeColors } from '~/shared/colors'
 
@@ -12,12 +11,7 @@ const INITIAL_PAGE = 1
 const LIST_PAGE_LENGTH = 50
 
 export const loader: LoaderFunction = async ({ request }) => {
-  let user
-  try {
-    user = await authenticator.isAuthenticated(request, {
-      failureRedirect: '/auth/login',
-    })
-  } catch (ignored) {}
+  const user = await getUserAuthData(request)
 
   const tradeAdsPage = await getTradeAdsList({
     include: {
@@ -32,14 +26,13 @@ export const loader: LoaderFunction = async ({ request }) => {
   })
 
   return {
-    user,
     tradeAdsPage,
+    user,
   }
 }
 
 export default function List() {
   const { user, tradeAdsPage: tradeAds } = useLoaderData()
-  console.log({ listUser: user, tradeAds })
 
   return (
     <Box
@@ -66,7 +59,6 @@ export default function List() {
             <Link style={{ textDecoration: 'none' }} to={`ad/${tradeAd.id}`}>
               <Box
                 sx={{
-                  height: 'inherit',
                   display: 'flex',
                   flexDirection: 'column',
                   color: 'black',

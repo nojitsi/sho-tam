@@ -1,5 +1,4 @@
 import AccountBoxIcon from '@mui/icons-material/AccountBox'
-import AccessibleForwardIcon from '@mui/icons-material/AccessibleForward'
 import { AppBar, Box, Toolbar, Typography } from '@mui/material'
 import { Link, useLoaderData } from '@remix-run/react'
 import { themeColors } from '~/shared/colors'

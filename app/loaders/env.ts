@@ -3,6 +3,7 @@ export const publicEnvVariables = {
   GOOGLE_OAUTH_REDIRECT_PATH: process.env.GOOGLE_OAUTH_REDIRECT_PATH,
   GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH:
     process.env.GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH,
+  SERVER_PUBLIC_URL: process.env.SERVER_PUBLIC_URL
 }
 
 export const privateEnvVariables = {

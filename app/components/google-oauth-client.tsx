@@ -7,17 +7,20 @@ const ONE_TAP_STYLES = {
   zIndex: '1001',
 } as React.CSSProperties
 
-export default function GoogleOneTap() {
-  const { env, user } = useLoaderData()
+export default function GoogleOneTap(
+  { autoprompt, redirectTo } = { autoprompt: true, redirectTo: '/' },
+) {
+  const { env } = useLoaderData()
+
   return (
     <div>
       <script src="https://accounts.google.com/gsi/client" async defer></script>
       <div
         id="g_id_onload"
         data-client_id={env.GOOGLE_OAUTH_CLIENT_ID}
-        data-login_uri={env.GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH}
+        data-login_uri={`${env.GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH}?redirectTo=${redirectTo}`}
         data-auto_select="false"
-        data-auto_prompt={user ? 'false' : 'true'}
+        data-auto_prompt={autoprompt ? 'false' : 'true'}
         data-type="standard"
         data-size="small"
         data-theme="outline"

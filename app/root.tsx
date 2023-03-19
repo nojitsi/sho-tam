@@ -4,10 +4,16 @@ import { publicEnvVariables } from './loaders/env'
 import globalStyle from '~/styles/global.css'
 import { Box, CssBaseline } from '@mui/material'
 
-import Footer from './src/components/footer'
-import Header from './src/components/header'
-import GoogleOneTap from './src/components/google-oauth-client'
-import { LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node'
+import Footer from './components/footer'
+import Header from './components/header'
+import GoogleOneTap from './components/google-oauth-client'
+import {
+  json,
+  LinksFunction,
+  LoaderFunction,
+  MetaFunction,
+  Response,
+} from '@remix-run/node'
 import {
   useLoaderData,
   Meta,
@@ -17,7 +23,12 @@ import {
   Scripts,
   LiveReload,
 } from '@remix-run/react'
-import { authenticator } from './service/auth'
+import { getUserAuthData } from './service/auth'
+import Message, {
+  MESSAGE_COLOR_HEADER_KEY,
+  MESSAGE_HEADER_KEY,
+} from './components/message'
+import { commitSession, getSession } from './service/session'
 
 export const links: LinksFunction = () => {
   return [
@@ -33,17 +44,30 @@ export const meta: MetaFunction = () => {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request, {})
-
-  return {
-    env: publicEnvVariables,
-    user,
-  }
+  const user = await getUserAuthData(request)
+  const session = await getSession(request.headers.get('cookie'))
+  const message = session.get(MESSAGE_HEADER_KEY)
+  const messageColor = session.get(MESSAGE_COLOR_HEADER_KEY)
+  const redirectTo = new URL(request.url).pathname
+  return json(
+    {
+      env: publicEnvVariables,
+      user,
+      message,
+      messageColor,
+      redirectTo,
+    },
+    {
+      headers: {
+        'set-cookie': await commitSession(session),
+      },
+    },
+  )
 }
 
 export default function App() {
-  const { env } = useLoaderData()
-
+  const { env, message, messageColor, user, redirectTo } = useLoaderData()
+  console.log(user)
   return (
     <html lang="en">
       <head>
@@ -62,13 +86,14 @@ export default function App() {
           }}
         >
           <Header />
+          <Message message={message} messageColor={messageColor} />
           <Outlet />
           <Footer />
         </Box>
 
         <ScrollRestoration />
         <Scripts />
-        <GoogleOneTap />
+        <GoogleOneTap autoprompt={!!user?.email} redirectTo={redirectTo} />
         <LiveReload />
       </body>
     </html>
