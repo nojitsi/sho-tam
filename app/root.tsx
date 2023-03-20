@@ -2,7 +2,7 @@ import { ROBOTO_FONT_URL } from '~/shared/const'
 import { publicEnvVariables } from './loaders/env'
 
 import globalStyle from '~/styles/global.css'
-import { Box, CssBaseline } from '@mui/material'
+import { Box, Container, CssBaseline, Typography } from '@mui/material'
 
 import Footer from './components/footer'
 import Header from './components/header'
@@ -67,7 +67,47 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function App() {
   const { env, message, messageColor, user, redirectTo } = useLoaderData()
-  console.log(user)
+
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <Meta />
+        <CssBaseline />
+        <Links />
+      </head>
+      <body>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh',
+          }}
+        >
+          <Header />
+          <Message message={message} messageColor={messageColor} />
+          <Outlet />
+          <Footer />
+        </Box>
+
+        <ScrollRestoration />
+        <Scripts />
+        <GoogleOneTap
+          autoprompt={!user?.email}
+          redirectTo={redirectTo}
+          GOOGLE_OAUTH_CLIENT_ID={env.GOOGLE_OAUTH_CLIENT_ID}
+          GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH={
+            env.GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH
+          }
+        />
+        <LiveReload />
+      </body>
+    </html>
+  )
+}
+
+export function CatchBoundary() {
   return (
     <html lang="en">
       <head>
@@ -86,14 +126,22 @@ export default function App() {
           }}
         >
           <Header />
-          <Message message={message} messageColor={messageColor} />
-          <Outlet />
+          <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="sm">
+            <Typography
+              variant="h3"
+              component="h2"
+              color="common.white"
+              gutterBottom
+            >
+              {'Сторінка не знайдена'}
+            </Typography>
+          </Container>
+
           <Footer />
         </Box>
 
         <ScrollRestoration />
         <Scripts />
-        <GoogleOneTap autoprompt={!!user?.email} redirectTo={redirectTo} />
         <LiveReload />
       </body>
     </html>

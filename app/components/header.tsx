@@ -4,8 +4,6 @@ import { Link, useLoaderData } from '@remix-run/react'
 import { themeColors } from '~/shared/colors'
 
 export default function Header() {
-  const user = useLoaderData()
-
   return (
     <AppBar
       position="relative"
@@ -14,7 +12,7 @@ export default function Header() {
       }}
     >
       <Toolbar>
-        <Link to="/" style={{ textDecoration: 'none' }}>
+        <Link to="" style={{ textDecoration: 'none' }}>
           <Box
             sx={{
               marginLeft: 'auto',
@@ -22,7 +20,7 @@ export default function Header() {
               alignItems: 'center',
             }}
           >
-            <img src="/img/icons/ukraine.webp" />
+            <img src="/img/icons/logo.svg" height={32} />
             <Typography
               variant="h6"
               sx={{
@@ -34,7 +32,7 @@ export default function Header() {
               }}
               noWrap
             >
-              Zbroya.in.ua
+              ZBROYA.IN.UA
             </Typography>
           </Box>
         </Link>

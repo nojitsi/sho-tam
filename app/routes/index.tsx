@@ -37,30 +37,35 @@ export default function Index() {
         <Typography color="common.white" align="right" variant="body1">
           Богдан Хмельницький
         </Typography>
-        <Button
-          variant="contained"
-          href="/list"
-          sx={{
-            backgroundColor: themeColors.appleRedSemiTransperent,
-            ml: 1,
-            mt: 2,
-          }}
-        >
-          Арсенал
-        </Button>
-        <Button
-          variant="contained"
-          href="/new"
-          sx={{
-            backgroundColor: themeColors.appleRedSemiTransperent,
-            ml: 1,
-            mt: 2,
-          }}
-        >
-          Продати
-        </Button>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <div>
+            <Button
+              variant="contained"
+              href="/list"
+              sx={{
+                backgroundColor: themeColors.appleRedSemiTransperent,
+                ml: 1,
+                mt: 2,
+              }}
+            >
+              Арсенал
+            </Button>
+          </div>
+          <div>
+            <Button
+              variant="contained"
+              href="/new"
+              sx={{
+                backgroundColor: themeColors.appleRedSemiTransperent,
+                ml: 1,
+                mt: 2,
+              }}
+            >
+              Продати
+            </Button>
+          </div>
+        </div>
       </Container>
-      <Outlet />
     </Box>
   )
 }
