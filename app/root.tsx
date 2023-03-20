@@ -5,14 +5,13 @@ import globalStyle from '~/styles/global.css'
 import { Box, Container, CssBaseline, Typography } from '@mui/material'
 
 import Footer from './components/footer'
-import Header from './components/header'
+import Header, { headerLinks } from './components/header'
 import GoogleOneTap from './components/google-oauth-client'
 import {
   json,
   LinksFunction,
   LoaderFunction,
   MetaFunction,
-  Response,
 } from '@remix-run/node'
 import {
   useLoaderData,
@@ -29,17 +28,16 @@ import Message, {
   MESSAGE_HEADER_KEY,
 } from './components/message'
 import { commitSession, getSession } from './service/session'
+import createEmotionCache from './styles/mui/createEmotionCache'
+import { CacheProvider } from '@emotion/react'
 
 export const links: LinksFunction = () => {
-  return [
-    { rel: 'stylesheet', href: globalStyle },
-    { rel: 'stylesheet', href: ROBOTO_FONT_URL },
-  ]
+  return [{ rel: 'stylesheet', href: globalStyle }, ...headerLinks()]
 }
 
 export const meta: MetaFunction = () => {
   return {
-    title: 'New Remix App',
+    title: 'Купити зброю б/в',
   }
 }
 
@@ -67,43 +65,46 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function App() {
   const { env, message, messageColor, user, redirectTo } = useLoaderData()
+  const cache = createEmotionCache()
 
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <Meta />
-        <CssBaseline />
-        <Links />
-      </head>
-      <body>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100vh',
-          }}
-        >
-          <Header />
-          <Message message={message} messageColor={messageColor} />
-          <Outlet />
-          <Footer />
-        </Box>
-
-        <ScrollRestoration />
-        <Scripts />
-        <GoogleOneTap
-          autoprompt={!user?.email}
-          redirectTo={redirectTo}
-          GOOGLE_OAUTH_CLIENT_ID={env.GOOGLE_OAUTH_CLIENT_ID}
-          GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH={
-            env.GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH
-          }
-        />
-        <LiveReload />
-      </body>
-    </html>
+    <CacheProvider value={cache}>
+      <html lang="en">
+        <head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width,initial-scale=1" />
+          <Meta />
+          <Links />
+          <CssBaseline />
+          {typeof document === 'undefined' ? '__STYLES__' : null}
+        </head>
+        <body>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: '100vh',
+            }}
+          >
+            <Header />
+            <Message message={message} messageColor={messageColor} />
+            <Outlet />
+            <Footer />
+          </Box>
+          <ScrollRestoration />
+          <Scripts />
+          <GoogleOneTap
+            autoprompt={!user?.email}
+            redirectTo={redirectTo}
+            GOOGLE_OAUTH_CLIENT_ID={env.GOOGLE_OAUTH_CLIENT_ID}
+            GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH={
+              env.GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH
+            }
+          />
+          {process.env.NODE_ENV === 'development' && <LiveReload />}{' '}
+        </body>
+      </html>
+    </CacheProvider>
   )
 }
 
@@ -115,7 +116,7 @@ export function CatchBoundary() {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
-        <CssBaseline />
+        {typeof document === 'undefined' ? '__STYLES__' : null}
       </head>
       <body>
         <Box

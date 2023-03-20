@@ -1,7 +1,14 @@
 import AccountBoxIcon from '@mui/icons-material/AccountBox'
 import { AppBar, Box, Toolbar, Typography } from '@mui/material'
-import { Link, useLoaderData } from '@remix-run/react'
+import { LinksFunction } from '@remix-run/node'
+import { Link } from '@remix-run/react'
 import { themeColors } from '~/shared/colors'
+
+const LOGO_PATH = '/img/icons/logo.svg'
+
+export const headerLinks: LinksFunction = () => {
+  return [{ rel: 'preload', href: LOGO_PATH, as: 'image' }]
+}
 
 export default function Header() {
   return (
@@ -12,7 +19,7 @@ export default function Header() {
       }}
     >
       <Toolbar>
-        <Link to="" style={{ textDecoration: 'none' }}>
+        <Link to="/" style={{ textDecoration: 'none' }}>
           <Box
             sx={{
               marginLeft: 'auto',
@@ -20,7 +27,12 @@ export default function Header() {
               alignItems: 'center',
             }}
           >
-            <img src="/img/icons/logo.svg" height={32} />
+            <img
+              src={LOGO_PATH}
+              style={{
+                height: '32px',
+              }}
+            />
             <Typography
               variant="h6"
               sx={{
@@ -29,6 +41,7 @@ export default function Header() {
                 color: 'common.white',
                 lineHeight: 1,
                 textDecoration: 'none',
+                alignSelf: 'center',
               }}
               noWrap
             >
