@@ -1,9 +1,5 @@
-import { Link } from 'remix'
-import type { MetaFunction, LinksFunction } from 'remix'
-import {
-	Links,
-	Outlet
-} from 'remix'
+import { type LinksFunction, type MetaFunction } from "@remix-run/node";
+import { Link, Links, Outlet } from "@remix-run/react";
 
 import { Box, Container, Typography, Button } from  '@mui/material'
 

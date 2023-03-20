@@ -232,7 +232,7 @@ export default function NewPost() {
   const [price, setPrice] = React.useState<string>(mocks?.price ?? '')
 
   return (
-    <Container
+    (<Container
       component="main"
       sx={{ mt: 2, mb: 2, backgroundColor: 'common.white', padding: 3 }}
       maxWidth="sm"
@@ -429,6 +429,6 @@ export default function NewPost() {
             : 'Завантажити в арсенал'}
         </Button>
       </Form>
-    </Container>
-  )
+    </Container>)
+  );
 }
