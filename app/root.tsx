@@ -30,6 +30,8 @@ import Message, {
 import { commitSession, getSession } from './service/session'
 import createEmotionCache from './styles/mui/createEmotionCache'
 import { CacheProvider } from '@emotion/react'
+import CookieConsent from 'react-cookie-consent'
+import { themeColors } from './shared/colors'
 
 export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: globalStyle }, ...headerLinks()]
@@ -89,6 +91,26 @@ export default function App() {
             <Header />
             <Message message={message} messageColor={messageColor} />
             <Outlet />
+            <CookieConsent
+              location="bottom"
+              buttonText="Ок"
+              style={{ backgroundColor: themeColors.red }}
+              buttonStyle={{
+                fontSize: '18px',
+                minWidth: '100px',
+                backgroundColor: themeColors.yellow,
+              }}
+            >
+              Ми зберігаємо{' '}
+              <a
+                style={{ color: 'white' }}
+                href="https://support.google.com/chrome/answer/95647?hl=uk&co=GENIE.Platform%3DDesktop"
+                target="_blank"
+              >
+                cookie
+              </a>{' '}
+              для поліпшення досвіду користування сайтом.
+            </CookieConsent>
             <Footer />
           </Box>
           <ScrollRestoration />

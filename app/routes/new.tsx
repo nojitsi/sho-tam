@@ -24,13 +24,7 @@ import {
   unstable_createMemoryUploadHandler,
   unstable_composeUploadHandlers,
 } from '@remix-run/node'
-import {
-  useActionData,
-  useTransition,
-  Form,
-  useLoaderData,
-  Link,
-} from '@remix-run/react'
+import { useActionData, Form, useLoaderData, Link } from '@remix-run/react'
 import { getGoodTypes } from '~/loaders/goodTypes'
 import { getLocationTreeData, ROOT_LOCATION_ID } from '~/loaders/locations'
 import { GoodTypes, User } from '@prisma/client'
@@ -53,7 +47,6 @@ import {
 
 const TEN_MB_IN_B = 10000000
 const MAX_NUMBER_OF_IMAGES = 10
-const LOGIN_FAILED_REDIRECT_LINK = '/auth/login?redirectTo=/new'
 
 const outerImageFolderPath = '/images'
 const innerImageFolderPath = 'public' + outerImageFolderPath
@@ -224,7 +217,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 const currencies = ['₴', '$', '€', '฿']
 
 export default function NewPost() {
-  const transition = useTransition()
   const errors = useActionData()
 
   const { goodTypes, locationTreeData, mocks } = useLoaderData()
@@ -232,7 +224,7 @@ export default function NewPost() {
   const [price, setPrice] = React.useState<string>(mocks?.price ?? '')
 
   return (
-    (<Container
+    <Container
       component="main"
       sx={{ mt: 2, mb: 2, backgroundColor: 'common.white', padding: 3 }}
       maxWidth="sm"
@@ -254,6 +246,7 @@ export default function NewPost() {
           required
           fullWidth
           defaultValue={mocks?.title}
+          autoFocus={true}
         />
         <FormControl sx={{ mt: 2 }} fullWidth error={!!errors?.category}>
           <InputLabel id="category-label">Категорія *</InputLabel>
@@ -300,22 +293,27 @@ export default function NewPost() {
         <TextField
           id="description-input"
           label="Опис"
-          variant="outlined"
+          minRows={3}
+          multiline
           name="description"
           inputProps={{ maxLength: 500 }}
           error={errors?.description}
           helperText={errors?.description}
           margin="normal"
-          rows={3}
-          multiline
           required
           fullWidth
           defaultValue={mocks?.description}
+          variant="outlined"
+          sx={{
+            minHeight: '102px',
+            inputComponent: 'textarea',
+          }}
         />
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
+            mt: 1,
           }}
         >
           <TextField
@@ -424,11 +422,9 @@ export default function NewPost() {
           }}
           fullWidth
         >
-          {transition.submission
-            ? 'Завантаження зброї...'
-            : 'Завантажити в арсенал'}
+          Додати в арсенал
         </Button>
       </Form>
-    </Container>)
-  );
+    </Container>
+  )
 }

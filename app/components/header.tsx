@@ -30,19 +30,25 @@ export default function Header() {
             <img
               src={LOGO_PATH}
               style={{
-                height: '32px',
+                height: '52px',
+                width: '52px',
               }}
             />
+
             <Typography
-              variant="h6"
               sx={{
                 ml: 1,
-                fontSize: '1.5rem',
+                fontSize: '28px',
                 color: 'common.white',
-                lineHeight: 1,
                 textDecoration: 'none',
-                alignSelf: 'center',
+                fontWeight: 400,
+                // lineHeight: 0,
+                boxSizing: 'content-box',
+                // paddingTop: '27px',
+                // height: '32px',
               }}
+              display="inline-block"
+              component="span"
               noWrap
             >
               ZBROYA.IN.UA
