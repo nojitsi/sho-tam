@@ -65,7 +65,6 @@ const setupUsers = async () => {
     data: {
       name: 'Злюка адмін',
       email: 'admin@gmail.com',
-      emailVerified: true,
       role: UserRole.ADMIN,
     },
   })
@@ -85,6 +84,10 @@ const setupAdTypes = async () => {
       {
         name: 'Пістолет',
         imageUrl: '/img/icons/weapons/pistol-ammo.webp',
+      },
+      {
+        name: 'Інше',
+        imageUrl: '/img/icons/weapons/other.webp',
       },
     ],
   })

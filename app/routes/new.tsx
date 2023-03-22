@@ -194,6 +194,7 @@ export const action: ActionFunction = async ({ request }: any) => {
       },
     })
   } catch (ignored: unknown) {
+    console.log(ignored)
     removeImageFolder(imageFolderUniqueIdentifier)
     return {
       images: 'Зображення не може перевищувати обʼєм в 10Мб',

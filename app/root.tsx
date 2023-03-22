@@ -48,7 +48,10 @@ export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request.headers.get('cookie'))
   const message = session.get(MESSAGE_HEADER_KEY)
   const messageColor = session.get(MESSAGE_COLOR_HEADER_KEY)
-  const redirectTo = new URL(request.url).pathname
+
+  const url = new URL(request.url)
+  const redirectTo = url.searchParams.get('redirectTo') ?? url.pathname
+
   return json(
     {
       env: publicEnvVariables,
