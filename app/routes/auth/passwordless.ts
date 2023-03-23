@@ -20,8 +20,6 @@ export const loader: LoaderFunction = async ({ request }) => {
     const errorMessage = session.get('auth:error')
     
     if (errorMessage === undefined) {
-
-      console.log(error.headers)
       session.flash(MESSAGE_HEADER_KEY, 'Ви успішно увійшли в систему')
       session.flash(MESSAGE_COLOR_HEADER_KEY, themeColors.darkGreen)
       return redirect(successRedirect, {

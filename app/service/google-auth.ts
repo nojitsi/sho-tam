@@ -16,7 +16,6 @@ export const verifyGoogleTokenAndGetInfo: any | undefined = async (
     })
     return ticket.getPayload()
   } catch (exception) {
-    console.log(exception)
     return false
   }
 }

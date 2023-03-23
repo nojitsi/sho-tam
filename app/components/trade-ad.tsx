@@ -147,19 +147,16 @@ export function TradeAd({ tradeAd }: { tradeAd: TradeAdListItemDto }) {
                 fontWeight: 500,
               }}
             >
-              {/* Blocks mui icon style change during styles rerender */}
-              <div style={{ color: 'white' }}>
-                <RemoveRedEyeOutlinedIcon
-                  fontSize="inherit"
-                  style={{
-                    position: 'absolute',
-                    top: '25%',
-                    transform: 'translateY(-50%)',
-                    textAlign: 'center',
-                    marginLeft: '45px',
-                  }}
-                />
-              </div>
+              <RemoveRedEyeOutlinedIcon
+                fontSize="inherit"
+                style={{
+                  position: 'absolute',
+                  top: '25%',
+                  transform: 'translateY(-50%)',
+                  textAlign: 'center',
+                  marginLeft: '45px',
+                }}
+              />
               {tradeAd.views}
             </Box>
           </Box>
