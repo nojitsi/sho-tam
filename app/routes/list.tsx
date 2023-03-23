@@ -1,29 +1,45 @@
 import { Box } from '@mui/material'
-import { GoodTypes, TradeAd, TradeAdImage } from '@prisma/client'
+import { GoodTypes, TradeAdImage, TradeAd as TradeAdDto } from '@prisma/client'
 import { LoaderFunction } from '@remix-run/node'
-import { Link, useLoaderData } from '@remix-run/react'
+import { useFetcher, useLoaderData } from '@remix-run/react'
 import { getTradeAdsList } from '~/loaders/tradeAd'
 import { getUserAuthData } from '~/service/auth'
-import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined'
-import { themeColors } from '~/shared/colors'
+import { useCallback, useEffect, useState } from 'react'
+import { TradeAd } from '~/components/trade-ad'
+
+export type TradeAdListItemDto = TradeAdDto & {
+  images: TradeAdImage[]
+  type: GoodTypes
+}
 
 const INITIAL_PAGE = 1
-const LIST_PAGE_LENGTH = 50
+const LIST_PAGE_LENGTH = 15
 
-export const loader: LoaderFunction = async ({ request }) => {
-  const user = await getUserAuthData(request)
-
-  const tradeAdsPage = await getTradeAdsList({
+const getTradeAdsPage = async (page: number) => {
+  return getTradeAdsList({
     include: {
       images: true,
       type: true,
     },
-    orderBy: {
-      updatedAt: 'desc',
-    },
+    orderBy: [
+      {
+        updatedAt: 'desc',
+      },
+      {
+        id: 'asc',
+      },
+    ],
+
     take: LIST_PAGE_LENGTH,
-    skip: LIST_PAGE_LENGTH * (INITIAL_PAGE - 1),
+    skip: LIST_PAGE_LENGTH * (page - 1),
   })
+}
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await getUserAuthData(request)
+  const tradeAdsPage = await getTradeAdsPage(
+    Number(new URL(request.url).searchParams.get('page') ?? INITIAL_PAGE),
+  )
 
   return {
     tradeAdsPage,
@@ -32,7 +48,79 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function List() {
-  const { user, tradeAdsPage: tradeAds } = useLoaderData()
+  const [scrollPosition, setScrollPosition] = useState(0)
+  const [clientHeight, setClientHeight] = useState(0)
+
+  const { user, tradeAdsPage: initialTradeAds } = useLoaderData()
+  const [tradeAds, setTradeAds] = useState(initialTradeAds)
+  //...
+  // We won't care about height until a client-side render
+  const [height, setHeight] = useState(null)
+
+  // Set height of the parent container whenever photos are loaded
+  const divHeight = useCallback(
+    node => {
+      if (node !== null) {
+        setHeight(node.getBoundingClientRect().height)
+      }
+    },
+    [tradeAds.length],
+  )
+
+  const [page, setPage] = useState(INITIAL_PAGE + 1)
+  const fetcher = useFetcher()
+  const [shouldFetch, setShouldFetch] = useState(true)
+
+  // Listen on scrolls. Fire on some self-described breakpoint
+  // Add Listeners to scroll and client resize
+  useEffect(() => {
+    const scrollListener = () => {
+      setClientHeight(window.innerHeight)
+      setScrollPosition(window.scrollY)
+    }
+
+    // Avoid running during SSR
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', scrollListener)
+    }
+
+    // Clean up
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('scroll', scrollListener)
+      }
+    }
+  }, [])
+
+  // Listen on scrolls. Fire on some self-described breakpoint
+  useEffect(() => {
+    if (!shouldFetch || !height) return
+    if (clientHeight + scrollPosition + 200 < height) return
+    fetcher.load(`/list?page=${page}`)
+
+    setShouldFetch(false)
+  }, [clientHeight, scrollPosition, fetcher])
+
+  useEffect(() => {
+    const loaderData = fetcher.data
+    if (!loaderData) {
+      return
+    }
+    const fetchedTradeAds = loaderData.tradeAdsPage
+
+    // Discontinue API calls if the last page has been reached
+    if (!fetchedTradeAds || fetchedTradeAds.length === 0) {
+      setShouldFetch(false)
+      return
+    }
+
+    setTradeAds((currentAds: TradeAdListItemDto[]) => [
+      ...currentAds,
+      ...fetchedTradeAds,
+    ])
+    setPage((page: number) => page + 1)
+    setShouldFetch(true)
+  }, [fetcher.data])
 
   return (
     <Box
@@ -40,170 +128,15 @@ export default function List() {
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'center',
+        alignItems: 'baseline',
+        ml: 'auto',
+        mr: 'auto',
       }}
+      ref={divHeight}
     >
-      {tradeAds.map(
-        (tradeAd: TradeAd & { images: TradeAdImage[]; type: GoodTypes }) => (
-          <Box
-            key={tradeAd.id}
-            sx={{
-              minHeight: '150px',
-              padding: '0px',
-              margin: '10px',
-              borderRadius: '5px',
-              borderStartEndRadius: '10px',
-              borderEndEndRadius: '0px',
-              width: '380px',
-            }}
-          >
-            <Link style={{ textDecoration: 'none' }} to={`ad/${tradeAd.id}`}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  color: 'black',
-                  backgroundColor: 'rgb(255 254 223)',
-                  borderRadius: '5px',
-                  borderEndEndRadius: '1px',
-                  height: '100%',
-                }}
-              >
-                <Box
-                  sx={{
-                    height: '200px',
-                  }}
-                >
-                  <img
-                    src={tradeAd.images[0]?.path ?? ''}
-                    style={{
-                      height: '100%',
-                      width: '100%',
-                      objectFit: 'cover',
-                      borderStartStartRadius: '5px',
-                      borderStartEndRadius: '5px',
-                    }}
-                  />
-                </Box>
-                <Box
-                  style={{
-                    textAlign: 'center',
-                    fontSize: '20px',
-                    backgroundColor: themeColors.darkGreen,
-                    color: 'white',
-                    fontWeight: 500,
-                    overflowWrap: 'break-word',
-                  }}
-                >
-                  {tradeAd.title}
-                </Box>
-                <Box
-                  style={{
-                    margin: '5px',
-                    height: '100%',
-                    padding: '5px',
-                    textAlign: 'center',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px',
-                    border: '2px dashed #45462a',
-                    backgroundColor: '#fa79217a',
-                    zIndex: '0',
-                    position: 'relative',
-                    minHeight: '45px',
-                    flexWrap: 'wrap',
-                  }}
-                >
-                  <Box
-                    style={{
-                      position: 'absolute',
-                      zIndex: '-1',
-                      color: '#ffffff40',
-                      fontWeight: 'bold',
-                      fontSize: '30px',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                    }}
-                  >
-                    КОМПЛЕКТ
-                  </Box>
-                  {tradeAd.kit.map((item, index) => (
-                    <Box
-                      key={index}
-                      style={{
-                        backgroundColor: themeColors.green,
-                        color: 'white',
-                        padding: '0px 5px 0px 5px',
-                        margin: '5px',
-                        fontWeight: '500',
-                        borderRadius: '6px',
-                        height: '26px',
-                      }}
-                    >
-                      {item}
-                    </Box>
-                  ))}
-                </Box>
-                <Box
-                  style={{
-                    color: 'white',
-                    backgroundColor: themeColors.red,
-                    display: 'flex',
-                    textAlign: 'center',
-                    borderEndStartRadius: '5px',
-                    lineHeight: '32px',
-                  }}
-                >
-                  <Box
-                    style={{
-                      width: '100%',
-                    }}
-                  >
-                    <img
-                      src={tradeAd.type.imageUrl}
-                      style={{
-                        verticalAlign: 'middle',
-                      }}
-                      height={32}
-                      width={32}
-                    />
-                  </Box>
-                  <Box
-                    style={{
-                      borderLeft: '1px solid white',
-                      borderRight: '1px solid white',
-                      width: '100%',
-                      fontWeight: 'bold',
-                      borderEndEndRadius: '4px',
-                    }}
-                  >
-                    {tradeAd.price}
-                  </Box>
-                  <Box
-                    style={{
-                      width: '100%',
-                      position: 'relative',
-                      fontWeight: 500,
-                    }}
-                  >
-                    <RemoveRedEyeOutlinedIcon
-                      fontSize="inherit"
-                      style={{
-                        position: 'absolute',
-                        top: '25%',
-                        transform: 'translateY(-50%)',
-                        textAlign: 'center',
-                        marginLeft: '45px',
-                      }}
-                    />
-                    {tradeAd.views}
-                  </Box>
-                </Box>
-              </Box>
-            </Link>
-          </Box>
-        ),
-      )}
+      {tradeAds.map((item: TradeAdListItemDto) => (
+        <TradeAd key={item.id} tradeAd={item} />
+      ))}
     </Box>
   )
 }

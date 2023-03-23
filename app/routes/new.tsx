@@ -398,7 +398,7 @@ export default function NewPost() {
             label={
               <div>
                 <span>Натискаючи це ви погоджуєтесь з </span>
-                <Link to={'/terms-conditions'} target="_blank">
+                <Link to={'/terms-and-conditions'} target="_blank">
                   умовами користування
                 </Link>
               </div>

@@ -5,11 +5,11 @@ import { renderToString } from 'react-dom/server'
 import { type EntryContext } from '@remix-run/node'
 import { RemixServer } from '@remix-run/react'
 
-import createEmotionCache from './styles/mui/createEmotionCache'
 import createEmotionServer from '@emotion/server/create-instance'
 
 import { CacheProvider } from '@emotion/react'
 import { CssBaseline } from '@mui/material'
+import { createEmotionCache } from './utils/cache/createEmotionCache'
 
 export default function handleRequest(
   request: Request,

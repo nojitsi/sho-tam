@@ -14,7 +14,7 @@ export default function Header() {
   return (
     <AppBar
       position="relative"
-      sx={{
+      style={{
         backgroundColor: themeColors.semiTransperentGreen,
       }}
     >
@@ -30,8 +30,8 @@ export default function Header() {
             <img
               src={LOGO_PATH}
               style={{
-                height: '52px',
-                width: '52px',
+                height: '44px',
+                width: '44px',
               }}
             />
 
