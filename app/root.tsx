@@ -1,7 +1,7 @@
 import { publicEnvVariables } from './loaders/env'
 
 import globalStyle from '~/styles/global.css'
-import { Box, Container, CssBaseline, Typography } from '@mui/material'
+import { Box, Button, Container, CssBaseline, Typography } from '@mui/material'
 
 import Footer from './components/footer'
 import Header, { headerLinks } from './components/header'
@@ -15,7 +15,10 @@ import {
   ScrollRestoration,
   Scripts,
   LiveReload,
+  useCatch,
 } from '@remix-run/react'
+import { isMobile } from 'react-device-detect'
+
 import { getUserAuthData } from './service/auth'
 import Message, {
   MESSAGE_COLOR_HEADER_KEY,
@@ -29,6 +32,7 @@ import { useContext } from 'react'
 import { unstable_useEnhancedEffect as useEnhancedEffect } from '@mui/material'
 
 import ClientStyleContext from './utils/cache/ClientStyleContext'
+import NotFound from './components/not-found'
 
 export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: globalStyle }, ...headerLinks()]
@@ -100,14 +104,12 @@ const Document = withEmotionCache(
               minHeight: '100vh',
             }}
           >
-            <Header />
             {children}
-            <Footer />
           </Box>
           <Scripts />
           <ScrollRestoration />
           <CookieConsent
-            location="bottom"
+            location={isMobile ? 'top' : 'bottom'}
             buttonText="Ок"
             style={{ backgroundColor: themeColors.red }}
             buttonStyle={{
@@ -138,6 +140,7 @@ export default function App() {
 
   return (
     <Document title="Купити зброю б/в">
+      <Header user={user} />
       <Message message={message} messageColor={messageColor} />
       <Outlet />
       <GoogleOneTap
@@ -148,23 +151,20 @@ export default function App() {
           env.GOOGLE_OAUTH_ONE_TAP_REDIRECT_PATH
         }
       />
+      <Footer />
     </Document>
   )
 }
 
 export function CatchBoundary() {
+  let caught = useCatch()
+  const { user } = caught.data
+
   return (
     <Document title="Cторінку не знайдено">
-      <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="sm">
-        <Typography
-          variant="h3"
-          component="h2"
-          color="common.white"
-          gutterBottom
-        >
-          {'Сторінку не знайдено'}
-        </Typography>
-      </Container>
+      <Header user={user} />
+      <NotFound />
+      <Footer />
     </Document>
   )
 }

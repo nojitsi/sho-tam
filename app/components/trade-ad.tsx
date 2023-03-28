@@ -1,8 +1,8 @@
 import { Box } from '@mui/material'
 import { themeColors } from '~/shared/colors'
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined'
-import { TradeAdListItemDto } from '~/routes/list'
 import { Link } from '@remix-run/react'
+import { TradeAdListItemDto } from '~/routes/list'
 
 export function TradeAd({ tradeAd }: { tradeAd: TradeAdListItemDto }) {
   return (
@@ -17,7 +17,7 @@ export function TradeAd({ tradeAd }: { tradeAd: TradeAdListItemDto }) {
         width: '350px',
       }}
     >
-      <Link style={{ textDecoration: 'none' }} to={`ad/${tradeAd.id}`}>
+      <Link style={{ textDecoration: 'none' }} to={`${tradeAd.id}`}>
         <Box
           sx={{
             display: 'flex',
@@ -27,6 +27,7 @@ export function TradeAd({ tradeAd }: { tradeAd: TradeAdListItemDto }) {
             borderRadius: '5px',
             borderEndEndRadius: '1px',
             height: '100%',
+            boxShadow: 'rgba(0, 0, 0, 0.5) 10px 10px 8px',
           }}
         >
           <Box
@@ -49,7 +50,7 @@ export function TradeAd({ tradeAd }: { tradeAd: TradeAdListItemDto }) {
             style={{
               textAlign: 'center',
               fontSize: '20px',
-              backgroundColor: themeColors.darkGreen,
+              backgroundColor: themeColors.red,
               color: 'white',
               fontWeight: 500,
               overflowWrap: 'break-word',
@@ -64,7 +65,6 @@ export function TradeAd({ tradeAd }: { tradeAd: TradeAdListItemDto }) {
               padding: '5px',
               textAlign: 'center',
               display: 'flex',
-              justifyContent: 'center',
               borderRadius: '5px',
               border: '2px dashed #45462a',
               backgroundColor: '#fa79217a',
@@ -108,7 +108,7 @@ export function TradeAd({ tradeAd }: { tradeAd: TradeAdListItemDto }) {
           <Box
             style={{
               color: 'white',
-              backgroundColor: themeColors.red,
+              backgroundColor: themeColors.darkGreen,
               display: 'flex',
               textAlign: 'center',
               borderEndStartRadius: '5px',
@@ -118,16 +118,12 @@ export function TradeAd({ tradeAd }: { tradeAd: TradeAdListItemDto }) {
             <Box
               style={{
                 width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
-              <img
-                src={tradeAd.type.imageUrl}
-                style={{
-                  verticalAlign: 'middle',
-                }}
-                height={32}
-                width={32}
-              />
+              <img src={tradeAd.type.imageUrl} height={28} width={28} />
             </Box>
             <Box
               style={{

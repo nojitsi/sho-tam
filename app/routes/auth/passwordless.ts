@@ -18,7 +18,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   }).catch(async error => {
     const session = await getSession(error.headers.get('set-cookie'))
     const errorMessage = session.get('auth:error')
-    
+    console.log(errorMessage)
     if (errorMessage === undefined) {
       session.flash(MESSAGE_HEADER_KEY, 'Ви успішно увійшли в систему')
       session.flash(MESSAGE_COLOR_HEADER_KEY, themeColors.darkGreen)

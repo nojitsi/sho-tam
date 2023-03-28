@@ -21,12 +21,14 @@ export default function handleRequest(
   const { extractCriticalToChunks, constructStyleTagsFromChunks } =
     createEmotionServer(cache)
 
-  const html = renderToString(
+  let html = renderToString(
     <CacheProvider value={cache}>
       <CssBaseline />
       <RemixServer context={remixContext} url={request.url} />
     </CacheProvider>,
   )
+
+  html = '<!DOCTYPE html>' + html
 
   const emotionCss = constructStyleTagsFromChunks(extractCriticalToChunks(html))
   responseHeaders.set('Content-Type', 'text/html')

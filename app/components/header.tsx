@@ -1,8 +1,9 @@
-import AccountBoxIcon from '@mui/icons-material/AccountBox'
-import { AppBar, Box, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
+import { User } from '@prisma/client'
 import { LinksFunction } from '@remix-run/node'
 import { Link } from '@remix-run/react'
 import { themeColors } from '~/shared/colors'
+import LoginIcon from '@mui/icons-material/Login'
 
 const LOGO_PATH = '/img/icons/logo.svg'
 
@@ -10,7 +11,7 @@ export const headerLinks: LinksFunction = () => {
   return [{ rel: 'preload', href: LOGO_PATH, as: 'image' }]
 }
 
-export default function Header() {
+export default function Header({ user }: { user?: User }) {
   return (
     <AppBar
       position="relative"
@@ -33,6 +34,7 @@ export default function Header() {
                 height: '44px',
                 width: '44px',
               }}
+              alt=""
             />
 
             <Typography
@@ -59,18 +61,31 @@ export default function Header() {
         <Box
           sx={{
             marginLeft: 'auto',
+            mr: 2,
           }}
         >
-          <Link to="/profile">
-            <AccountBoxIcon
-              sx={{
-                mr: 2,
-                fontSize: '1.5rem',
-                color: 'common.white',
-                display: 'block',
-              }}
-            />
-          </Link>
+          {user ? (
+            <Link to="/my-ads">
+              <img
+                src={user.avatar ?? '/img/icons/user.webp'}
+                style={{
+                  height: '34px',
+                  width: '34px',
+                  borderRadius: '17px',
+                }}
+              />
+            </Link>
+          ) : (
+            <Link to="/login">
+              <LoginIcon
+                sx={{
+                  fontSize: '1.5rem',
+                  color: 'common.white',
+                  display: 'block',
+                }}
+              />
+            </Link>
+          )}
         </Box>
       </Toolbar>
     </AppBar>

@@ -37,7 +37,7 @@ const createUserIfNotExist = async (userDto: UserDTO) => {
 
 export const getUserAuthData = async (request: any, redirectOnFail = false, redirectTo = '/') => {
   const options = redirectOnFail ? {
-    failureRedirect: `/auth/login?redirectTo=${redirectTo}` ,
+    failureRedirect: `/login?redirectTo=${redirectTo}` ,
   } : {}
   return await authenticator.isAuthenticated(request, options as any) as unknown as User
 }

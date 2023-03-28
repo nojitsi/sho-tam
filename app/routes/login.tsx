@@ -16,7 +16,7 @@ const BUTTON_STYLES = {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const urlParams = new URL(request.url).searchParams
-  const redirectTo = urlParams.get('redirectTo')
+  const redirectTo = urlParams.get('redirectTo') ?? '/'
   const user = getUserAuthData(request)
 
   return { redirectTo }
@@ -62,7 +62,7 @@ export default function Index({ request }: any) {
           </Form>
         </Container>
         <Container sx={{ mt: 2, mb: 2 }} maxWidth="sm">
-          <Form action="/auth/logout" method="post">
+          <Form action="/logout" method="post">
             <button style={BUTTON_STYLES}>Logout</button>
           </Form>
         </Container>

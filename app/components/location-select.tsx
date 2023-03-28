@@ -10,7 +10,6 @@ import { FormMocks } from '~/loaders/mocks'
 const LOCATION_SELECT_CONTAINER_ID = 'locationSelectContainerId'
 const LOCATION_PATH_INPUT_ID = 'locationPathInputId'
 const LOCATION_INPUT_ID = 'locationInputId'
-const DEFAULT_LOCATION_ID = 0
 
 export const locationSelectLinks = () => [
   { rel: 'stylesheet', href: locationSelectStyles },

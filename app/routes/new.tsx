@@ -156,7 +156,7 @@ export const action: ActionFunction = async ({ request }: any) => {
     const result = await createTradeAd({
       title,
       description,
-      price: `${currency}${price}`,
+      price: `${price}${currency}`,
       contact,
       type: {
         connect: {
