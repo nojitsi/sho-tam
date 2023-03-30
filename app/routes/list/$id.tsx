@@ -45,6 +45,7 @@ export const meta: MetaFunction = ({ data }) => {
     charSet: 'utf-8',
     'og:title': adData.title,
     'og:description': adData.description,
+    'og:type': adData.type.name,
     'og:image': adData.images[0].path,
   }
 }
