@@ -6,10 +6,20 @@ import { getTradeAdsList } from '~/loaders/tradeAd'
 import { getUserAuthData } from '~/service/auth'
 import { useCallback, useEffect, useState } from 'react'
 import { TradeAd } from '~/components/trade-ad'
+import { MetaFunction } from '@remix-run/react/dist/routeModules'
 
 export type TradeAdListItemDto = TradeAdDto & {
   images: TradeAdImage[]
   type: GoodTypes
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: 'Оголошення з продажу зброї | zbroya.in.ua',
+    description: 'Дошка оголошеннь з продажу бу зброї. Купити бу зброю!',
+    viewport: 'width=device-width,initial-scale=1',
+    charSet: 'utf-8',
+  }
 }
 
 const INITIAL_PAGE = 1

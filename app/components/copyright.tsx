@@ -5,7 +5,7 @@ import { themeColors } from '~/shared/colors'
 export default function Copyright() {
   return (
     <Typography color={themeColors.yellow} variant="body2" align="center">
-      {'Copyright © '}
+      {'™ '}
       <Link color="inherit" href="/">
         Zbroya.in.ua
       </Link>{' '}
@@ -13,4 +13,3 @@ export default function Copyright() {
     </Typography>
   )
 }
-

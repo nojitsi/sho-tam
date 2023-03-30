@@ -140,7 +140,7 @@ export default function App() {
   const { env, message, messageColor, user, redirectTo } = useLoaderData()
 
   return (
-    <Document title="Купити зброю б/в">
+    <Document>
       <Header user={user} />
       <Message message={message} messageColor={messageColor} />
       <Outlet />

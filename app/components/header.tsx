@@ -65,13 +65,14 @@ export default function Header({ user }: { user?: User }) {
           }}
         >
           {user ? (
-            <Link to="/my-ads">
+            <Link to="/profile">
               <img
                 src={user.avatar ?? '/img/icons/user.webp'}
                 style={{
                   height: '34px',
                   width: '34px',
                   borderRadius: '17px',
+                  display: 'flex',
                 }}
               />
             </Link>

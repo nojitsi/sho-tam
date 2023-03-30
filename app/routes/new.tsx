@@ -23,6 +23,7 @@ import {
   LoaderFunction,
   unstable_createMemoryUploadHandler,
   unstable_composeUploadHandlers,
+  MetaFunction,
 } from '@remix-run/node'
 import { useActionData, Form, useLoaderData, Link } from '@remix-run/react'
 import { getGoodTypes } from '~/loaders/goodTypes'
@@ -63,6 +64,15 @@ type TradeAddCreationError = {
   images?: string
   contact?: string
   terms?: string
+}
+
+export const meta: MetaFunction = () => {
+  return {
+    title: 'Створити оголошення | zbroya.in.ua',
+    description: 'Форма розміщення оголошення на сайті',
+    viewport: 'width=device-width,initial-scale=1',
+    charSet: 'utf-8',
+  }
 }
 
 export const links = () => [...locationSelectLinks(), ...fileInputLinks()]
@@ -226,7 +236,7 @@ export default function NewPost() {
   return (
     <Container
       component="main"
-      sx={{ mt: 2, mb: 2, backgroundColor: 'common.white', padding: 3 }}
+      sx={{ mt: 2, mb: 2, backgroundColor: 'whitesmoke', padding: 3 }}
       maxWidth="sm"
     >
       <Form
@@ -239,6 +249,7 @@ export default function NewPost() {
           id="title-input"
           label="Заголовок"
           variant="filled"
+          color="success"
           name="title"
           inputProps={{ maxLength: 50 }}
           error={errors?.title}
@@ -255,6 +266,7 @@ export default function NewPost() {
             id="category"
             label="Категорія *"
             name="typeId"
+            color="success"
             required
             defaultValue={mocks?.typeId}
             style={{
@@ -301,6 +313,7 @@ export default function NewPost() {
           helperText={errors?.description}
           margin="normal"
           required
+          color="success"
           fullWidth
           defaultValue={mocks?.description}
           variant="outlined"
@@ -319,6 +332,7 @@ export default function NewPost() {
           <TextField
             name="price"
             label="Ціна"
+            color="success"
             sx={{ width: '80%' }}
             onChange={e => {
               const regex = /^[0-9\b]+$/
@@ -334,6 +348,7 @@ export default function NewPost() {
             name="currency"
             variant="filled"
             defaultValue={currencies[0]}
+            color="success"
             sx={{
               width: '18%',
               '& .MuiInputBase-input': {
@@ -379,6 +394,7 @@ export default function NewPost() {
           label="Контакт"
           variant="filled"
           name="contact"
+          color="success"
           inputProps={{ maxLength: 50 }}
           sx={{ mt: 2 }}
           error={errors?.contact}
@@ -419,6 +435,9 @@ export default function NewPost() {
           sx={{
             backgroundColor: '#b5303096',
             mt: 2,
+            '&:hover': {
+              backgroundColor: themeColors.green,
+            },
           }}
           fullWidth
         >

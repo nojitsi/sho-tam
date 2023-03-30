@@ -21,7 +21,7 @@ export default function Message({
         mt: 2,
         alignSelf: 'center',
         padding: '10px 10px 10px 66px',
-
+        minHeight: '45px',
         backgroundColor: messageColor ?? themeColors.orange,
         position: 'relative',
         overflow: 'hidden',

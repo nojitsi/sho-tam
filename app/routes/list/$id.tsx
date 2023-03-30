@@ -1,5 +1,10 @@
 import { Box, Container, useMediaQuery } from '@mui/material'
-import { json, LinksFunction, LoaderFunction } from '@remix-run/node'
+import {
+  json,
+  LinksFunction,
+  LoaderFunction,
+  MetaFunction,
+} from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { getTradeAdById, upadteTradeAd } from '~/loaders/tradeAd'
 import { getUserAuthData } from '~/service/auth'
@@ -31,6 +36,19 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   }
 }
 
+export const meta: MetaFunction = ({ data }) => {
+  const adData = data.tradeAd
+  return {
+    title: `${adData.title} | zbroya.in.ua`,
+    description: adData.description,
+    viewport: 'width=device-width,initial-scale=1',
+    charSet: 'utf-8',
+    'og:title': adData.title,
+    'og:description': adData.description,
+    'og:image': adData.images[0].path,
+  }
+}
+
 export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: imageGalleryStyles }]
 }
@@ -46,8 +64,7 @@ export default function SingleAd() {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        width: 'inherit',
-        height: 'inherit',
+
         mt: 2,
         mb: 2,
       }}
@@ -79,10 +96,11 @@ export default function SingleAd() {
             display: 'flex',
             alignSelf: 'start',
             width: '100%',
-            padding: '10px 20px 10px 10px',
+            padding: '0px 20px 5px 10px',
             fontSize: '32px',
             backgroundColor: themeColors.red,
             color: 'white',
+            alignItems: 'center',
           }}
         >
           <span
@@ -105,6 +123,7 @@ export default function SingleAd() {
           <Box
             style={{
               marginRight: '20px',
+              display: 'flex',
             }}
           >
             <img src={tradeAd.type.imageUrl} height={42} width={42} />
@@ -172,7 +191,7 @@ export default function SingleAd() {
                   margin: '5px',
                   fontWeight: '500',
                   borderRadius: '6px',
-                  height: '26px',
+                  height: '36px',
                 }}
               >
                 {item}

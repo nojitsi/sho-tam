@@ -5,7 +5,7 @@ import { themeColors } from '~/shared/colors'
 
 export const meta: MetaFunction = () => {
   return {
-    title: 'Tactical platform',
+    title: 'Контакти | zbroya.in.ua',
     viewport: 'width=device-width,initial-scale=1',
     charSet: 'utf-8',
   }

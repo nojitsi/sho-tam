@@ -55,6 +55,7 @@ export class KitInput extends React.Component<KitInputProps, KitInputState> {
           renderInput={params => (
             <TextField
               label="Комплект"
+              color="success"
               {...params}
               placeholder="Вкажіть комплектацію"
             />

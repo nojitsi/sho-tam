@@ -148,9 +148,9 @@ export function TradeAd({ tradeAd }: { tradeAd: TradeAdListItemDto }) {
                 style={{
                   position: 'absolute',
                   top: '25%',
+                  right: '2px',
                   transform: 'translateY(-50%)',
                   textAlign: 'center',
-                  marginLeft: '45px',
                 }}
               />
               {tradeAd.views}

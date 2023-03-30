@@ -4,7 +4,9 @@ import { themeColors } from '~/shared/colors'
 
 export const meta: MetaFunction = () => {
   return {
-    title: 'Tactical platform',
+    title: 'Народний майданчик для продажу зброї | zbroya.in.ua',
+    description:
+      'Zbroya.in.ua це народний майданчик для продажу і купівлі зброї. Покупайте і продавайте вашу зброю онлайн!',
     viewport: 'width=device-width,initial-scale=1',
     charSet: 'utf-8',
   }
@@ -16,11 +18,11 @@ export default function Index() {
       <Container component="main" sx={{ mt: 8 }} maxWidth="sm">
         <Typography
           variant="h3"
-          component="h2"
+          component="h1"
           color="common.white"
           gutterBottom
         >
-          {'Народний портал для продажу зброї'}
+          {'Купити або продати бу зброю'}
         </Typography>
         <Typography color="common.white" align="right" variant="body1">
           Якщо підступності не буде краю, то доведеться битися.
@@ -36,11 +38,14 @@ export default function Index() {
               href="/list"
               sx={{
                 backgroundColor: themeColors.appleRedSemiTransperent,
+                '&:hover': {
+                  backgroundColor: themeColors.green,
+                },
                 ml: 1,
                 mt: 2,
               }}
             >
-              Арсенал
+              Купити
             </Button>
           </div>
           <div>
@@ -49,6 +54,9 @@ export default function Index() {
               href="/new"
               sx={{
                 backgroundColor: themeColors.appleRedSemiTransperent,
+                '&:hover': {
+                  backgroundColor: themeColors.green,
+                },
                 ml: 1,
                 mt: 2,
               }}
