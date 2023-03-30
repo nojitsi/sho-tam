@@ -12,8 +12,8 @@ export default function Footer() {
       sx={{
         py: 3,
         px: 2,
-        mt: 'auto',
         backgroundColor: themeColors.semiTransperentGreen,
+        marginTop: 'auto',
       }}
     >
       <Container maxWidth="sm">
@@ -30,4 +30,3 @@ export default function Footer() {
     </Box>
   )
 }
-

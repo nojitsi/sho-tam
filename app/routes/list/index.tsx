@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { GoodTypes, TradeAdImage, TradeAd as TradeAdDto } from '@prisma/client'
 import { LoaderFunction } from '@remix-run/node'
 import { useFetcher, useLoaderData } from '@remix-run/react'
@@ -134,9 +134,20 @@ export default function List() {
       }}
       ref={divHeight}
     >
-      {tradeAds.map((item: TradeAdListItemDto) => (
-        <TradeAd key={item.id} tradeAd={item} />
-      ))}
+      {tradeAds.length ? (
+        tradeAds.map((item: TradeAdListItemDto) => (
+          <TradeAd key={item.id} tradeAd={item} />
+        ))
+      ) : (
+        <Typography
+          variant="h3"
+          component="h2"
+          color="common.white"
+          gutterBottom
+        >
+          {'Станьте першим хто додав свою зброю в арсенал :)'}
+        </Typography>
+      )}
     </Box>
   )
 }
