@@ -33,3 +33,7 @@ processes = []
   [[services.ports]]
     handlers = ["tls", "http"]
     port = "443"
+
+  [[services.ports]]
+    handlers = ["pg_tls"]
+    port = 5432

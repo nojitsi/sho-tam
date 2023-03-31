@@ -257,7 +257,6 @@ export default function NewPost() {
           required
           fullWidth
           defaultValue={mocks?.title}
-          autoFocus={true}
         />
         <FormControl sx={{ mt: 2 }} fullWidth error={!!errors?.category}>
           <InputLabel id="category-label">Категорія *</InputLabel>
