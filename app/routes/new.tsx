@@ -421,7 +421,7 @@ export default function NewPost() {
             control={
               <Checkbox
                 name="terms"
-                defaultChecked={mocks.terms ?? false}
+                defaultChecked={mocks?.terms ?? false}
                 color="success"
                 required
               />
