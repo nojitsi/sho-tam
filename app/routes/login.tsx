@@ -35,70 +35,83 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index({ request }: any) {
   const { redirectTo, user } = useLoaderData()
-  console.log(user)
   return (
-    <Container
-      component="main"
-      sx={{
-        mt: 8,
-        mb: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#ffffffcc',
-        paddingLeft: '10px !important',
-        paddingRight: '10px !important',
-        borderRadius: '10px',
-      }}
-      maxWidth="xs"
-    >
-      {user?.email ? (
-        <Container sx={{ mt: 2, mb: 2 }} maxWidth="sm">
-          <Form action="/logout" method="post">
-            <button style={BUTTON_STYLES}>Вийти</button>
-          </Form>
-        </Container>
-      ) : (
-        <>
-          {' '}
-          <Box sx={{ mt: 2 }}>
-            <Form method="post" action={`/auth/${AuthStrategies.PASSWORDLESS}`}>
-              <TextField
-                label="Email"
-                variant="filled"
-                name="email"
-                inputProps={{ maxLength: 50 }}
-                required
-                fullWidth
-                type="email"
-                // color="error"
-                color="success"
-                sx={{
-                  mb: 1,
-                  // backgroundColor: '#fff !important',
-                  '& label': {
-                    color: '#000',
-                  },
-                }}
-                style={{
-                  color: '#000 !important',
-                }}
-              />
-              <input name="redirectTo" value={redirectTo} readOnly hidden />
-              <button style={BUTTON_STYLES}>Увійти за допомогою Email</button>
+    <>
+      <Typography
+        variant="h3"
+        component="h1"
+        color="common.white"
+        align="center"
+        sx={{ mt: 2 }}
+      >
+        {'Вхід'}
+      </Typography>{' '}
+      <Container
+        component="main"
+        sx={{
+          mt: 2,
+          mb: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#ffffffcc',
+          paddingLeft: '10px !important',
+          paddingRight: '10px !important',
+          borderRadius: '10px',
+        }}
+        maxWidth="xs"
+      >
+        {user?.email ? (
+          <Container sx={{ mt: 2, mb: 2 }} maxWidth="sm">
+            <Form action="/logout" method="post">
+              <button style={BUTTON_STYLES}>Вийти</button>
             </Form>
-          </Box>
-          <Box sx={{ mt: 1, mb: 1, width: '100%' }}>
-            <Form method="post" action={`/auth/${SocialsProvider.GOOGLE}`}>
-              <input name="redirectTo" value={redirectTo} readOnly hidden />
-              <button style={BUTTON_STYLES}>
-                Увійти за допомогою гугл аккаунту
-              </button>
-            </Form>
-          </Box>
-        </>
-      )}
-    </Container>
+          </Container>
+        ) : (
+          <>
+            {' '}
+            <Box sx={{ mt: 2 }}>
+              <Form
+                method="post"
+                action={`/auth/${AuthStrategies.PASSWORDLESS}`}
+              >
+                <TextField
+                  label="Email"
+                  variant="filled"
+                  name="email"
+                  inputProps={{ maxLength: 50 }}
+                  required
+                  fullWidth
+                  type="email"
+                  // color="error"
+                  color="success"
+                  sx={{
+                    mb: 1,
+                    // backgroundColor: '#fff !important',
+                    '& label': {
+                      color: '#000',
+                    },
+                  }}
+                  style={{
+                    color: '#000 !important',
+                  }}
+                />
+                <input name="redirectTo" value={redirectTo} readOnly hidden />
+                <button style={BUTTON_STYLES}>Увійти за допомогою Email</button>
+              </Form>
+            </Box>
+            <Box sx={{ mt: 1, mb: 1, width: '100%' }}>
+              <Form method="post" action={`/auth/${SocialsProvider.GOOGLE}`}>
+                <input name="redirectTo" value={redirectTo} readOnly hidden />
+                <button style={BUTTON_STYLES}>
+                  Увійти за допомогою гугл аккаунту
+                </button>
+              </Form>
+            </Box>
+          </>
+        )}
+      </Container>
+    </>
   )
 }

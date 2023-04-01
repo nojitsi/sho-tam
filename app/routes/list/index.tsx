@@ -151,8 +151,9 @@ export default function List() {
       ) : (
         <Typography
           variant="h3"
-          component="h2"
+          component="h1"
           color="common.white"
+          align="center"
           gutterBottom
         >
           {'Станьте першим хто додав свою зброю в арсенал :)'}

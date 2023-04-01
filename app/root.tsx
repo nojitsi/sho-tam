@@ -121,7 +121,7 @@ const Document = withEmotionCache(
           >
             Ми зберігаємо{' '}
             <a
-              style={{ color: 'white' }}
+              style={{ color: themeColors.yellow }}
               href="https://support.google.com/chrome/answer/95647?hl=uk&co=GENIE.Platform%3DDesktop"
               target="_blank"
             >

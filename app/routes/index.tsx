@@ -67,6 +67,7 @@ export default function Index() {
         </div>
         <img
           src="/img/sirko.webp"
+          alt="hero"
           style={{
             position: 'absolute',
             left: 0,

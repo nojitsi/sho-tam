@@ -65,7 +65,7 @@ export default function Header({ user }: { user?: User }) {
           }}
         >
           {user ? (
-            <Link to="/profile">
+            <Link to="/profile" aria-label="Профіль">
               <img
                 src={user.avatar ?? '/img/icons/user.webp'}
                 style={{
@@ -74,10 +74,11 @@ export default function Header({ user }: { user?: User }) {
                   borderRadius: '17px',
                   display: 'flex',
                 }}
+                alt="профіль"
               />
             </Link>
           ) : (
-            <Link to="/login">
+            <Link to="/login" aria-label="Увійти">
               <LoginIcon
                 sx={{
                   fontSize: '1.5rem',
