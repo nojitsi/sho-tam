@@ -5,4 +5,4 @@ export const auth = {
   successRedirect: '/list',
   failureRedirect: '/',
 }
-export const DOMAIN = 'https://zbroya.in.ua/'
+export const DOMAIN = 'https://zbroya.in.ua'
