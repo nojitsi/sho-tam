@@ -4,9 +4,9 @@ import { themeColors } from '~/shared/colors'
 
 export const meta: MetaFunction = () => {
   return {
-    title: 'Народний майданчик для продажу зброї | zbroya.in.ua',
+    title: 'Продати бу зброю | zbroya.in.ua',
     description:
-      'Zbroya.in.ua це народний майданчик для продажу і купівлі зброї. Покупайте і продавайте вашу зброю онлайн!',
+      'Покупайте і продавайте вашу зброю онлайн! Zbroya.in.ua це народна платформа для продажу зброї, де ви можете як продати, так і купити бу зброю.',
     viewport: 'width=device-width,initial-scale=1',
     charSet: 'utf-8',
   }
@@ -22,7 +22,7 @@ export default function Index() {
           color="common.white"
           gutterBottom
         >
-          {'Купити або продати бу зброю'}
+          {'Народна платформа для продажу зброї'}
         </Typography>
         <Typography color="common.white" align="right" variant="body1">
           Якщо підступності не буде краю, то доведеться битися.
@@ -33,36 +33,40 @@ export default function Index() {
         </Typography>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <div>
-            <Button
-              variant="contained"
-              href="/list"
-              sx={{
-                backgroundColor: themeColors.appleRedSemiTransperent,
-                '&:hover': {
-                  backgroundColor: themeColors.green,
-                },
-                ml: 1,
-                mt: 2,
-              }}
-            >
-              Купити
-            </Button>
+            <h2>
+              <Button
+                variant="contained"
+                href="/list"
+                sx={{
+                  backgroundColor: themeColors.appleRedSemiTransperent,
+                  '&:hover': {
+                    backgroundColor: themeColors.green,
+                  },
+                  ml: 1,
+                  mt: 2,
+                }}
+              >
+                Купити
+              </Button>
+            </h2>
           </div>
           <div>
-            <Button
-              variant="contained"
-              href="/new"
-              sx={{
-                backgroundColor: themeColors.appleRedSemiTransperent,
-                '&:hover': {
-                  backgroundColor: themeColors.green,
-                },
-                ml: 1,
-                mt: 2,
-              }}
-            >
-              Продати
-            </Button>
+            <h2>
+              <Button
+                variant="contained"
+                href="/new"
+                sx={{
+                  backgroundColor: themeColors.appleRedSemiTransperent,
+                  '&:hover': {
+                    backgroundColor: themeColors.green,
+                  },
+                  ml: 1,
+                  mt: 2,
+                }}
+              >
+                Продати
+              </Button>
+            </h2>
           </div>
         </div>
         <img
