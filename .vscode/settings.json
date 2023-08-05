@@ -1,0 +1,8 @@
+{
+  "editor.fontFamily": "MonoLisa, \"SF Mono\", Ubuntu Mono, \"Segoe UI\", Roboto, \"Segoe UI Emoji",
+  "editor.minimap.renderCharacters": true,
+  "workbench.preferredDarkColorTheme": "Monokai",
+  "editor.codeActionsOnSave": {
+  
+  }
+}
